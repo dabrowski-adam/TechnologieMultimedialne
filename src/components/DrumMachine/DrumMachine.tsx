@@ -1,42 +1,73 @@
-import React, { Component, Fragment } from 'react';
-import { FontAwesomeIcon } from '@fortawesome/react-fontawesome';
-import { faPlayCircle } from '@fortawesome/free-solid-svg-icons';
-import './DrumMachine.scss';
+import React, {Component, Fragment} from 'react'
+import {FontAwesomeIcon} from '@fortawesome/react-fontawesome'
+import {faPlayCircle} from '@fortawesome/free-solid-svg-icons'
+import './DrumMachine.scss'
+import SoundList from '../SoundList/SoundList'
+import PropTypes from 'prop-types'
+import SoundConsole from "../SoundConsole/SoundConsole"
 
-let Pizzicato = require('pizzicato/distr/Pizzicato');
 
-class DrumMachine extends Component {
+const track1 = require('assets/sounds/DRUMS/track1.wav')
+const track2 = require('assets/sounds/DRUMS/track2.wav')
+const track3 = require('assets/sounds/DRUMS/track3.wav')
+const track4 = require('assets/sounds/DRUMS/track4.wav')
+const track5 = require('assets/sounds/DRUMS/track5.wav')
+const track6 = require('assets/sounds/DRUMS/track6.wav')
+const track7 = require('assets/sounds/DRUMS/track7.wav')
+const track8 = require('assets/sounds/DRUMS/track8.wav')
+const track9 = require('assets/sounds/DRUMS/track9.wav')
+const track10 = require('assets/sounds/DRUMS/track10.wav')
 
-  sound: any;
-
-  componentWillMount = (): void => {
-    this.sound = new Pizzicato.Sound({
-      source: 'wave',
-      options: {
-        type: 'sawtooth'
-      }
-    });
-
-    this.sound.on('play', () => {
-      setTimeout(() => {
-        this.sound.stop();
-      }, 1000);
-    });
-  }
-
-  play = (): void => {
-    this.sound.play();
-  }
-
-  render() {
-    return (
-      <Fragment>
-        <div className='d-flex justify-content-center mt-3' onClick={this.play} >
-          <FontAwesomeIcon icon={faPlayCircle} size='9x' className='play-button' />
-        </div>
-      </Fragment>
-    );
-  }
+interface IDrumMachineState {
+    chosenTracks: any[]
 }
 
-export default DrumMachine;
+class DrumMachine extends Component<{}, IDrumMachineState> {
+
+    state: IDrumMachineState = {
+        chosenTracks: []
+    }
+
+    static childContextTypes = {
+        tracks: PropTypes.array.isRequired,
+        addTrack: PropTypes.func.isRequired
+    }
+
+    getChildContext = () => {
+        return {
+            tracks: [
+                track1,
+                track2,
+                track3,
+                track4,
+                track5,
+                track6,
+                track7,
+                track8,
+                track9,
+                track10
+            ],
+            addTrack: (track: any) => this.onAddTrack(track)
+        }
+    }
+
+    onAddTrack = (track: any) => {
+        this.setState({
+            chosenTracks: this.state.chosenTracks.concat(track)
+        })
+    }
+
+    render() {
+        const {chosenTracks} = this.state
+        return (
+            <Fragment>
+                <div className='justify-content-center mt-3'>
+                    <SoundConsole chosenTracks={chosenTracks}/>
+                    <SoundList/>
+                </div>
+            </Fragment>
+        )
+    }
+}
+
+export default DrumMachine
