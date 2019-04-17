@@ -149,7 +149,7 @@ const PianoRoll = () => {
 
             setIsPlaying(!isPlaying)
         },
-        [isPlaying]
+        [isPlaying, selection]
     )
 
     return (

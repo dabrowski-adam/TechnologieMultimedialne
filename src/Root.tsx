@@ -8,7 +8,7 @@ class Root extends Component {
         return (
             <Router>
                 <Route exact path="/" render={() => (
-                    <Redirect to="/drum-machine"/>
+                    <Redirect to="/piano-roll"/>
                 )}
                 />
                 <Route path='/drum-machine' component={DrumMachine}/>
