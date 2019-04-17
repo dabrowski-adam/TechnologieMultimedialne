@@ -1,6 +1,6 @@
 import React, { useState, useCallback } from 'react'
 import { times, always, assoc, update } from 'ramda'
-import Tone from 'tone'
+import Tone, { Player } from 'tone'
 
 const kick = require('assets/sounds/DRUMS/track1.wav')
 const closed = require('assets/sounds/DRUMS/track2.wav')
@@ -38,7 +38,7 @@ const defaultSelection: InstrumentBeats = {
 }
 
 const updateSelection = (selection: InstrumentBeats, instrument: Instrument, n: number, value: boolean) => {
-    console.log(selection[instrument], n, value, assoc(instrument, update(n, value, selection[instrument]), selection))
+    // console.log(selection[instrument], n, value, assoc(instrument, update(n, value, selection[instrument]), selection))
     return assoc(instrument, update(n, value, selection[instrument]), selection)
 }
 
@@ -93,7 +93,7 @@ const Roll = ({ instrument, beats, select }: RollProps) => {
     const handleClick = useCallback(
         event => {
             previewSound()
-            
+
             const { id } = event.target
             const n = parseInt(id)
             select(instrument, n, !beats[n])
@@ -113,12 +113,42 @@ const Roll = ({ instrument, beats, select }: RollProps) => {
     )
 }
 
+const pause = (sequence?: Tone.Transport) => {
+    if (!sequence) { return }
+    sequence.stop(0)
+    Tone.Transport.stop()
+}
+
+const play = (selection: InstrumentBeats): Tone.Sequence => {
+    const sequence = new Tone.Sequence((time, col) => {
+        // console.log('BEAT', time, col)
+        if (selection[Instrument.OpenHat][col]) { sounds[Instrument.OpenHat].start(time, 0, '16n') }
+        if (selection[Instrument.ClosedHat][col]) { sounds[Instrument.ClosedHat].start(time, 0, '16n') }
+        if (selection[Instrument.Clap][col]) { sounds[Instrument.Clap].start(time, 0, '16n') }
+        if (selection[Instrument.Kick][col]) { sounds[Instrument.Kick].start(time, 0, '16n') }
+    }, ['0', '1', '2', '3', '4', '5', '6', '7', '8', '9', '10', '11', '12', '13', '14', '15'], '16n').start(0)
+
+    Tone.Transport.start()
+
+    return sequence
+}
+
 // PianoRoll
 const PianoRoll = () => {
     const [selection, select] = useDrumMachine()
+    const [sequence, setSequence] = useState(null)
     const [isPlaying, setIsPlaying] = useState(false)
     const togglePlaying = useCallback(
-        () => { setIsPlaying(!isPlaying) },
+        () => {
+            if (isPlaying && sequence) {
+                // Tone.Transport.clear(sequence)
+                pause(sequence)
+            } else {
+                setSequence(play(selection))
+            }
+
+            setIsPlaying(!isPlaying)
+        },
         [isPlaying]
     )
 
