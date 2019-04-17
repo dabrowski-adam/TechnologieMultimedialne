@@ -1,11 +1,24 @@
 import React, { useState, useCallback } from 'react'
-import { range, times, always, assoc, update } from 'ramda'
+import { times, always, assoc, update } from 'ramda'
+import Tone from 'tone'
+
+const kick = require('assets/sounds/DRUMS/track1.wav')
+const closed = require('assets/sounds/DRUMS/track2.wav')
+const clap = require('assets/sounds/DRUMS/track3.wav')
+const open = require('assets/sounds/DRUMS/track4.wav')
 
 enum Instrument {
     OpenHat = "Open Hat",
     ClosedHat = "Closed Hat",
     Clap = "Clap",
     Kick = "Kick"
+}
+
+const sounds = {
+    [Instrument.OpenHat]: new Tone.Player(open).toMaster(),
+    [Instrument.ClosedHat]: new Tone.Player(closed).toMaster(),
+    [Instrument.Clap]: new Tone.Player(clap).toMaster(),
+    [Instrument.Kick]: new Tone.Player(kick).toMaster(),
 }
 
 type InstrumentBeats = {
@@ -77,11 +90,20 @@ const Roll = ({ instrument, beats, select }: RollProps) => {
             select(instrument, n, !beats[n])
         },
         [select, instrument]
-    ) 
+    )
+
+    const previewSound = useCallback(
+        () => {
+            sounds[instrument].start()
+        },
+        [instrument]
+    )
 
     return (
         <div style={{ display: 'flex', flex: 1 }}>
-            <div style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '120px', height: '60px', background: 'lightgrey', margin: '1px' }}>
+            <div
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '120px', height: '60px', background: 'lightgrey', margin: '1px' }}
+                onClick={previewSound}>
                 {instrument}
             </div>
             {beats.map((isActive, i) => <Beat isActive={isActive} onClick={handleClick} id={`${i}`} key={i} />)}
@@ -92,9 +114,20 @@ const Roll = ({ instrument, beats, select }: RollProps) => {
 // PianoRoll
 const PianoRoll = () => {
     const [selection, select] = useDrumMachine()
+    const [isPlaying, setIsPlaying] = useState(false)
+    const togglePlaying = useCallback(
+        () => { setIsPlaying(!isPlaying) },
+        [isPlaying]
+    )
 
     return (
         <div style={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
+            <div
+                style={{ display: 'flex', alignItems: 'center', justifyContent: 'center', width: '120px', height: '60px', padding: '0 30px, 0 30px', margin: '1px', background: 'lightskyblue', color: 'white' }}
+                onClick={togglePlaying}
+                >
+                {isPlaying ? 'STOP' : 'PLAY'}
+            </div>
             <Roll instrument={Instrument.OpenHat} beats={selection[Instrument.OpenHat]} select={select} />
             <Roll instrument={Instrument.ClosedHat} beats={selection[Instrument.ClosedHat]} select={select} />
             <Roll instrument={Instrument.Clap} beats={selection.Clap} select={select} />
