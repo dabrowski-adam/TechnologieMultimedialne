@@ -83,20 +83,22 @@ type RollProps = {
 }
 
 const Roll = ({ instrument, beats, select }: RollProps) => {
-    const handleClick = useCallback(
-        event => {
-            const { id } = event.target
-            const n = parseInt(id)
-            select(instrument, n, !beats[n])
-        },
-        [select, instrument]
-    )
-
     const previewSound = useCallback(
         () => {
             sounds[instrument].start()
         },
         [instrument]
+    )
+
+    const handleClick = useCallback(
+        event => {
+            previewSound()
+            
+            const { id } = event.target
+            const n = parseInt(id)
+            select(instrument, n, !beats[n])
+        },
+        [select, instrument]
     )
 
     return (
