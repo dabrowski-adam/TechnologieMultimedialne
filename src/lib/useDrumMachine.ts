@@ -25,9 +25,13 @@ export const playSound = (instrument: Instrument) => {
   sounds[instrument].start();
 };
 
+const INTERVAL = '16n';
+
 const makeSequence = (selection: InstrumentBeats): Tone.Sequence => {
   const sequence = new Tone.Sequence(
     (time, col) => {
+      // console.log('Sequence progress', col, time)
+
       Object.entries(selection).forEach(([instrument, beats]) => {
         if (beats[col]) {
           sounds[instrument as Instrument].start(time, 0, '16n');
@@ -35,17 +39,17 @@ const makeSequence = (selection: InstrumentBeats): Tone.Sequence => {
       });
     },
     range(0, 15).map(toString),
-    '16n'
+    INTERVAL
   ).start(0);
 
   return sequence;
 };
 
-const playSequence = () => {
+const startPlaying = () => {
   Tone.Transport.start();
 };
 
-const stopSequence = (sequence?: Tone.Transport) => {
+const stopPlaying = (sequence?: Tone.Sequence) => {
   if (!sequence) {
     return;
   }
@@ -82,12 +86,12 @@ const useDrumMachine = (): [
   () => void
 ] => {
   const [selection, setSelection] = useState(defaultSelection);
-  const [sequence, setSequence] = useState(null);
+  const [sequence, setSequence] = useState<Tone.Sequence>(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
   const play = useCallback(() => {
     setSequence(makeSequence(selection));
-    playSequence();
+    startPlaying();
     setIsPlaying(true);
   }, [selection, setSequence, setIsPlaying]);
 
@@ -96,19 +100,25 @@ const useDrumMachine = (): [
       return;
     }
 
-    stopSequence(sequence);
+    stopPlaying(sequence);
     setIsPlaying(false);
   }, [sequence]);
 
   const selectBeat = useCallback(
     (instrument: Instrument, n: number, value: boolean) => {
-      setSelection(updateSelection(selection, instrument, n, value));
+      const updatedSelection = updateSelection(selection, instrument, n, value);
+      setSelection(updatedSelection);
 
       if (isPlaying) {
-        play();
+        // 'Modify' currently playing sequence
+        const { progress } = sequence;
+        sequence.stop(0);
+        const updatedSequence = makeSequence(updatedSelection);
+        updatedSequence.start(progress);
+        setSequence(updatedSequence);
       }
     },
-    [selection, play, isPlaying]
+    [selection, isPlaying, sequence]
   );
 
   return [selection, selectBeat, isPlaying, play, pause];
