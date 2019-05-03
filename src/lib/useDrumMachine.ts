@@ -83,6 +83,7 @@ const useDrumMachine = (): [
   (instrument: Instrument, n: number, value: boolean) => void,
   boolean,
   () => void,
+  () => void,
   () => void
 ] => {
   const [selection, setSelection] = useState(defaultSelection);
@@ -121,7 +122,12 @@ const useDrumMachine = (): [
     [selection, isPlaying, sequence]
   );
 
-  return [selection, selectBeat, isPlaying, play, pause];
+  const clearSelection = useCallback(() => {
+    setSelection(defaultSelection);
+    pause();
+  }, [setSelection, pause]);
+
+  return [selection, selectBeat, isPlaying, play, pause, clearSelection];
 };
 
 export default useDrumMachine;
