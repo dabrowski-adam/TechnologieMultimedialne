@@ -22,7 +22,9 @@
     "baseUrl": "src"
   },
   "include": [
-    "src", "react-rotary-knob.d.ts"
+    "src",
+    "src/typings/react-rotary-knob.d.ts", 
+    "src/typings/wav.d.ts"
   ],
   "exclude": [
     "src/node_modules"
