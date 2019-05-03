@@ -1,10 +1,10 @@
 import { always, assoc, times, update, range, toString } from 'ramda';
 import { useCallback, useState } from 'react';
 import Tone from 'tone';
-const kick = require('assets/sounds/track1.wav');
-const closed = require('assets/sounds/track2.wav');
-const clap = require('assets/sounds/track3.wav');
-const open = require('assets/sounds/track4.wav');
+import kick from 'assets/sounds/track1.wav';
+import closed from 'assets/sounds/track2.wav';
+import clap from 'assets/sounds/track3.wav';
+import open from 'assets/sounds/track4.wav';
 
 export enum Instrument {
   OpenHat = 'Open Hat',
