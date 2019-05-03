@@ -36,6 +36,7 @@ const PianoRoll = () => {
           instrument={instrument as Instrument}
           beats={beats}
           select={select}
+          isPlaying={isPlaying}
           key={instrument}
         />
       ))}

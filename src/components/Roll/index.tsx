@@ -6,22 +6,25 @@ type RollProps = {
   instrument: Instrument;
   beats: Array<boolean>;
   select: (instrument: Instrument, n: number, value: boolean) => void;
+  isPlaying: boolean;
 };
 
-const Roll = ({ instrument, beats, select }: RollProps) => {
+const Roll = ({ instrument, beats, select, isPlaying }: RollProps) => {
   const previewSound = useCallback(() => {
     playSound(instrument);
   }, [instrument]);
 
   const handleClick = useCallback(
     event => {
-      previewSound();
+      if (!isPlaying) {
+        previewSound();
+      }
 
       const { id } = event.target;
       const n = parseInt(id);
       select(instrument, n, !beats[n]);
     },
-    [previewSound, select, instrument, beats]
+    [previewSound, select, instrument, beats, isPlaying]
   );
 
   return (
