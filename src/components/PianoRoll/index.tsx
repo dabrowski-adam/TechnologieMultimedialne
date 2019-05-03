@@ -6,7 +6,16 @@ import Clear from '../Clear';
 import Tempo from '../Tempo';
 
 const PianoRoll = () => {
-  const [selection, select, isPlaying, play, pause, clear] = useDrumMachine();
+  const [
+    selection,
+    select,
+    isPlaying,
+    play,
+    pause,
+    clear,
+    tempo,
+    setTempo
+  ] = useDrumMachine();
 
   const togglePlaying = useCallback(() => {
     if (isPlaying) {
@@ -16,16 +25,19 @@ const PianoRoll = () => {
     }
   }, [isPlaying, play, pause]);
 
-  const updateTempo = useCallback(tempo => {
-    console.log('New tempo: ', tempo);
-  }, []);
+  const updateTempo = useCallback(
+    value => {
+      setTempo(value);
+    },
+    [setTempo]
+  );
 
   return (
     <div style={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
       <div style={{ display: 'flex' }}>
         <Play isPlaying={isPlaying} togglePlaying={togglePlaying} />
         <Clear clearSelection={clear} />
-        <Tempo updateTempo={updateTempo} />
+        <Tempo value={tempo} onChange={updateTempo} />
       </div>
       {Object.entries(selection).map(([instrument, beats]) => (
         <Roll

@@ -84,11 +84,14 @@ const useDrumMachine = (): [
   boolean,
   () => void,
   () => void,
-  () => void
+  () => void,
+  number,
+  (tempo: number) => void
 ] => {
   const [selection, setSelection] = useState(defaultSelection);
   const [sequence, setSequence] = useState<Tone.Sequence>(null);
   const [isPlaying, setIsPlaying] = useState(false);
+  const [tempo, setTempo] = useState(Tone.Transport.bpm.value); // Could this be solved better?
 
   const play = useCallback(() => {
     setSequence(makeSequence(selection));
@@ -127,7 +130,25 @@ const useDrumMachine = (): [
     pause();
   }, [setSelection, pause]);
 
-  return [selection, selectBeat, isPlaying, play, pause, clearSelection];
+  const changeTempo = useCallback(
+    tempo => {
+      setTempo(tempo);
+      Tone.Transport.bpm.value = tempo;
+      // TODO: Ramp instead? Tone.Transport.bpm.rampTo(tempo, seconds);
+    },
+    [setTempo]
+  );
+
+  return [
+    selection,
+    selectBeat,
+    isPlaying,
+    play,
+    pause,
+    clearSelection,
+    tempo,
+    changeTempo
+  ];
 };
 
 export default useDrumMachine;

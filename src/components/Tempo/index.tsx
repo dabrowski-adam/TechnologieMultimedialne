@@ -1,43 +1,34 @@
-import React, { useState, useCallback } from 'react';
+import React from 'react';
 import { Knob } from 'react-rotary-knob';
 
 type TempoProps = {
-  updateTempo: (value: number) => void;
+  value: number;
+  onChange: (value: number) => void;
 };
 
-const Tempo = ({ updateTempo }: TempoProps) => {
-  const [value, setValue] = useState(0);
-  const handleOnChange = useCallback(
-    val => {
-      setValue(val);
-      console.log(val);
-    },
-    [setValue]
-  );
+const MIN_TEMPO = 20;
+const MAX_TEMPO = 200;
 
-  return (
-    <div
-      style={{
-        display: 'flex',
-        alignItems: 'center',
-        justifyContent: 'center',
-        width: '60px',
-        background: 'lightskyblue',
-        margin: '1px'
-      }}
-    >
-      <Knob
-        value={value}
-        onChange={handleOnChange}
-        min={20}
-        max={200}
-        unlockDistance={0}
-        preciseMode={false}
-        width={200}
-        height={200}
-      />
-    </div>
-  );
-};
+const Tempo = ({ value, onChange }: TempoProps) => (
+  <div
+    style={{
+      display: 'flex',
+      alignItems: 'center',
+      justifyContent: 'center',
+      width: '60px',
+      background: 'lightskyblue',
+      margin: '1px'
+    }}
+  >
+    <Knob
+      value={value}
+      onChange={onChange}
+      min={MIN_TEMPO}
+      max={MAX_TEMPO}
+      unlockDistance={0}
+      preciseMode={false}
+    />
+  </div>
+);
 
 export default Tempo;
