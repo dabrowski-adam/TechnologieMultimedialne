@@ -21,7 +21,7 @@
     "jsx": "preserve"
   },
   "include": [
-    "src"
+    "src", "react-rotary-knob.d.ts"
   ],
   "exclude": [
     "src/node_modules"
