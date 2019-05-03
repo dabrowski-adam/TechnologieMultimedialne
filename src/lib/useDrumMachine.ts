@@ -1,10 +1,10 @@
 import { always, assoc, times, update, range, toString } from 'ramda';
 import { useCallback, useState } from 'react';
 import Tone from 'tone';
-const kick = require('assets/sounds/drums/track1.wav');
-const closed = require('assets/sounds/drums/track2.wav');
-const clap = require('assets/sounds/drums/track3.wav');
-const open = require('assets/sounds/drums/track4.wav');
+const kick = require('assets/sounds/DRUMS/track1.wav');
+const closed = require('assets/sounds/DRUMS/track2.wav');
+const clap = require('assets/sounds/DRUMS/track3.wav');
+const open = require('assets/sounds/DRUMS/track4.wav');
 
 export enum Instrument {
   OpenHat = 'Open Hat',
@@ -29,8 +29,6 @@ const INTERVAL = '16n';
 const makeSequence = (selection: InstrumentBeats): Tone.Sequence => {
   const sequence = new Tone.Sequence(
     (time, col) => {
-      // console.log('Sequence progress', col, time)
-
       Object.entries(selection).forEach(([instrument, beats]) => {
         if (beats[col]) {
           sounds[instrument as Instrument].start(time, 0, '16n');
