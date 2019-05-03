@@ -4,7 +4,7 @@ const buttonStyle = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
-  width: '120px',
+  width: '121px',
   height: '60px',
   padding: '0 30px, 0 30px',
   margin: '1px',

@@ -32,9 +32,10 @@ const Roll = ({ instrument, beats, select, isPlaying }: RollProps) => {
       <div
         style={{
           display: 'flex',
+          flexShrink: 0,
           alignItems: 'center',
           justifyContent: 'center',
-          width: '120px',
+          width: '121px',
           height: '60px',
           background: 'lightgrey',
           margin: '1px'
