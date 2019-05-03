@@ -1,4 +1,1 @@
-declare module '*.wav' {
-  let _: string;
-  export = _;
-}
+declare module '*.wav';
