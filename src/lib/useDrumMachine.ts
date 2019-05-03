@@ -85,13 +85,6 @@ const useDrumMachine = (): [
   const [sequence, setSequence] = useState(null);
   const [isPlaying, setIsPlaying] = useState(false);
 
-  const selectBeat = useCallback(
-    (instrument: Instrument, n: number, value: boolean) => {
-      setSelection(updateSelection(selection, instrument, n, value));
-    },
-    [selection]
-  );
-
   const play = useCallback(() => {
     setSequence(makeSequence(selection));
     playSequence();
@@ -106,6 +99,17 @@ const useDrumMachine = (): [
     stopSequence(sequence);
     setIsPlaying(false);
   }, [sequence]);
+
+  const selectBeat = useCallback(
+    (instrument: Instrument, n: number, value: boolean) => {
+      setSelection(updateSelection(selection, instrument, n, value));
+
+      if (isPlaying) {
+        play();
+      }
+    },
+    [selection, play, isPlaying]
+  );
 
   return [selection, selectBeat, isPlaying, play, pause];
 };
