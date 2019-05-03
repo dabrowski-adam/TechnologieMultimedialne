@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import useDrumMachine, { Instrument } from '../../lib/useDrumMachine';
+import useDrumMachine, { Instrument } from '../useDrumMachine';
 import Roll from '../Roll';
 import Play from '../Play';
 import Clear from '../Clear';

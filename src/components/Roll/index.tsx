@@ -1,5 +1,5 @@
 import React, { useCallback } from 'react';
-import { Instrument, playSound } from '../../lib/useDrumMachine';
+import { Instrument, playSound } from '../useDrumMachine';
 import Beat from '../Beat';
 
 type RollProps = {

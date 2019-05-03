@@ -18,13 +18,11 @@
     "resolveJsonModule": true,
     "isolatedModules": true,
     "noEmit": true,
-    "jsx": "preserve",
-    "baseUrl": "./src"
+    "jsx": "preserve"
   },
   "include": [
     "src",
-    "src/typings/react-rotary-knob.d.ts", 
-    "src/typings/wav.d.ts"
+    "src/typings/react-rotary-knob.d.ts"
   ],
   "exclude": [
     "src/node_modules"
