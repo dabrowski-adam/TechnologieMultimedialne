@@ -4,14 +4,19 @@ type BeatProps = {
   isActive: boolean;
   onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   id: string;
+  isPlaying: boolean;
 };
 
-const Beat = ({ isActive, onClick, id }: BeatProps) => {
+const Beat = ({ isActive, onClick, id, isPlaying }: BeatProps) => {
   return (
     <div
       style={{
         width: '60px',
-        background: isActive ? 'lightcoral' : 'lightgrey',
+        background: isActive
+          ? 'lightcoral'
+          : isPlaying
+          ? 'lightgreen'
+          : 'lightgrey',
         margin: '1px'
       }}
       id={id}

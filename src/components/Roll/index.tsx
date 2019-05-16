@@ -7,9 +7,16 @@ type RollProps = {
   beats: Array<boolean>;
   select: (instrument: Instrument, n: number, value: boolean) => void;
   isPlaying: boolean;
+  currentBeat: number;
 };
 
-const Roll = ({ instrument, beats, select, isPlaying }: RollProps) => {
+const Roll = ({
+  instrument,
+  beats,
+  select,
+  isPlaying,
+  currentBeat
+}: RollProps) => {
   const previewSound = useCallback(() => {
     playSound(instrument);
   }, [instrument]);
@@ -45,7 +52,13 @@ const Roll = ({ instrument, beats, select, isPlaying }: RollProps) => {
         {instrument}
       </div>
       {beats.map((isActive, i) => (
-        <Beat isActive={isActive} onClick={handleClick} id={`${i}`} key={i} />
+        <Beat
+          isActive={isActive}
+          onClick={handleClick}
+          id={`${i}`}
+          key={i}
+          isPlaying={currentBeat == i}
+        />
       ))}
     </div>
   );

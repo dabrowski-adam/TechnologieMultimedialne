@@ -44,9 +44,13 @@ export const playSound = (instrument: Instrument) => {
 
 const INTERVAL = '16n';
 
-const makeSequence = (selection: InstrumentBeats): Tone.Sequence => {
+const makeSequence = (
+  selection: InstrumentBeats,
+  setCurrentBeat: any
+): Tone.Sequence => {
   const sequence = new Tone.Sequence(
     (time, col) => {
+      setCurrentBeat(col);
       Object.entries(selection).forEach(([instrument, beats]) => {
         if (beats[col]) {
           sounds[instrument as Instrument].start(time, 0, '16n');
@@ -107,15 +111,17 @@ const useDrumMachine = (): [
   () => void,
   () => void,
   number,
-  (tempo: number) => void
+  (tempo: number) => void,
+  number
 ] => {
   const [selection, setSelection] = useState(defaultSelection);
   const [sequence, setSequence] = useState<Tone.Sequence>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [tempo, setTempo] = useState(Tone.Transport.bpm.value); // Could this be solved better?
+  const [currentBeat, setCurrentBeat] = useState(-1);
 
   const play = useCallback(() => {
-    setSequence(makeSequence(selection));
+    setSequence(makeSequence(selection, setCurrentBeat));
     startPlaying();
     setIsPlaying(true);
   }, [selection, setSequence, setIsPlaying]);
@@ -138,7 +144,7 @@ const useDrumMachine = (): [
         // 'Modify' currently playing sequence
         const { progress } = sequence;
         sequence.stop(0);
-        const updatedSequence = makeSequence(updatedSelection);
+        const updatedSequence = makeSequence(updatedSelection, setCurrentBeat);
         updatedSequence.start(progress);
         setSequence(updatedSequence);
       }
@@ -168,7 +174,8 @@ const useDrumMachine = (): [
     pause,
     clearSelection,
     tempo,
-    changeTempo
+    changeTempo,
+    currentBeat
   ];
 };
 
