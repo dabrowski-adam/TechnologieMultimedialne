@@ -8,6 +8,12 @@ type RollProps = {
   select: (instrument: Instrument, n: number, value: boolean) => void;
   isPlaying: boolean;
   currentBeat: number;
+  updateMouseDown: (
+    beat: number,
+    instrument: Instrument,
+    value: boolean
+  ) => void;
+  updateMouseUp: (beat: number, instrument: Instrument) => void;
 };
 
 const Roll = ({
@@ -15,7 +21,9 @@ const Roll = ({
   beats,
   select,
   isPlaying,
-  currentBeat
+  currentBeat,
+  updateMouseDown,
+  updateMouseUp
 }: RollProps) => {
   const previewSound = useCallback(() => {
     playSound(instrument);
@@ -33,6 +41,14 @@ const Roll = ({
     },
     [previewSound, select, instrument, beats, isPlaying]
   );
+
+  const handleMouseDown = (beat: number) => {
+    updateMouseDown(beat, instrument, !beats[beat]);
+  };
+
+  const handleMouseUp = (beat: number) => {
+    updateMouseUp(beat, instrument);
+  };
 
   return (
     <div style={{ display: 'flex', flex: 1 }}>
@@ -58,6 +74,8 @@ const Roll = ({
           id={`${i}`}
           key={i}
           isPlaying={currentBeat == i}
+          updateMouseDown={handleMouseDown}
+          updateMouseUp={handleMouseUp}
         />
       ))}
     </div>

@@ -5,9 +5,18 @@ type BeatProps = {
   onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   id: string;
   isPlaying: boolean;
+  updateMouseDown: (beat: number) => void;
+  updateMouseUp: (beat: number) => void;
 };
 
-const Beat = ({ isActive, onClick, id, isPlaying }: BeatProps) => {
+const Beat = ({
+  isActive,
+  onClick,
+  id,
+  isPlaying,
+  updateMouseDown,
+  updateMouseUp
+}: BeatProps) => {
   return (
     <div
       style={{
@@ -21,6 +30,11 @@ const Beat = ({ isActive, onClick, id, isPlaying }: BeatProps) => {
       }}
       id={id}
       onClick={onClick}
+      onMouseDown={(event: React.MouseEvent) => {
+        event.preventDefault();
+        updateMouseDown(parseInt(id));
+      }}
+      onMouseUp={(event: React.MouseEvent) => updateMouseUp(parseInt(id))}
     />
   );
 };
