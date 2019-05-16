@@ -53,7 +53,7 @@ const makeSequence = (selection: InstrumentBeats): Tone.Sequence => {
         }
       });
     },
-    range(0, 15).map(toString),
+    range(0, 16).map(toString),
     INTERVAL
   ).start(0);
 
