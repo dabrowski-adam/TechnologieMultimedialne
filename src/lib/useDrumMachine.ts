@@ -2,22 +2,40 @@ import { always, assoc, times, update, range, toString } from 'ramda';
 import { useCallback, useState } from 'react';
 import Tone from 'tone';
 import kick from 'assets/sounds/track1.wav';
-import closed from 'assets/sounds/track2.wav';
+import snare from 'assets/sounds/track2.wav';
 import clap from 'assets/sounds/track3.wav';
-import open from 'assets/sounds/track4.wav';
+import closed from 'assets/sounds/track4.wav';
+import shaker from 'assets/sounds/track5.wav';
+import open from 'assets/sounds/track6.wav';
+import tri from 'assets/sounds/track7.wav';
+import rim from 'assets/sounds/track8.wav';
+import clav from 'assets/sounds/track9.wav';
+import cow from 'assets/sounds/track10.wav';
 
 export enum Instrument {
   OpenHat = 'Open Hat',
   ClosedHat = 'Closed Hat',
   Clap = 'Clap',
-  Kick = 'Kick'
+  Kick = 'Kick',
+  Snare = 'Snare',
+  Triangle = 'Triangle',
+  Rimshot = 'Rimshot',
+  Clave = 'Clave',
+  Cowbell = 'Cowbell',
+  Shaker = 'Shaker'
 }
 
 export const sounds = {
   [Instrument.OpenHat]: new Tone.Player(open).toMaster(),
   [Instrument.ClosedHat]: new Tone.Player(closed).toMaster(),
   [Instrument.Clap]: new Tone.Player(clap).toMaster(),
-  [Instrument.Kick]: new Tone.Player(kick).toMaster()
+  [Instrument.Kick]: new Tone.Player(kick).toMaster(),
+  [Instrument.Snare]: new Tone.Player(snare).toMaster(),
+  [Instrument.Triangle]: new Tone.Player(tri).toMaster(),
+  [Instrument.Rimshot]: new Tone.Player(rim).toMaster(),
+  [Instrument.Cowbell]: new Tone.Player(cow).toMaster(),
+  [Instrument.Clave]: new Tone.Player(clav).toMaster(),
+  [Instrument.Shaker]: new Tone.Player(shaker).toMaster()
 };
 
 export const playSound = (instrument: Instrument) => {
@@ -62,10 +80,16 @@ const BEATS = 16;
 const emptySelection = times(always(false), BEATS);
 
 const defaultSelection: InstrumentBeats = {
-  [Instrument.OpenHat]: emptySelection,
-  [Instrument.ClosedHat]: emptySelection,
+  [Instrument.Kick]: emptySelection,
+  [Instrument.Snare]: emptySelection,
   [Instrument.Clap]: emptySelection,
-  [Instrument.Kick]: emptySelection
+  [Instrument.ClosedHat]: emptySelection,
+  [Instrument.OpenHat]: emptySelection,
+  [Instrument.Clave]: emptySelection,
+  [Instrument.Shaker]: emptySelection,
+  [Instrument.Rimshot]: emptySelection,
+  [Instrument.Triangle]: emptySelection,
+  [Instrument.Cowbell]: emptySelection
 };
 
 const updateSelection = (
