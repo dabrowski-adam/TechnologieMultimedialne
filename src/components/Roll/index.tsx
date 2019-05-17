@@ -16,6 +16,8 @@ type RollProps = {
     value: boolean
   ) => void;
   updateMouseUp: (beat: number, instrument: Instrument) => void;
+  mouseEnter: (beat: number, instrument: Instrument) => void;
+  mouseLeave: (beat: number, instrument: Instrument) => void;
 };
 
 const Roll = ({
@@ -26,7 +28,9 @@ const Roll = ({
   setPitch,
   currentBeat,
   updateMouseDown,
-  updateMouseUp
+  updateMouseUp,
+  mouseEnter,
+  mouseLeave
 }: RollProps) => {
   const previewSound = useCallback(() => {
     playSound(instrument);
@@ -63,6 +67,14 @@ const Roll = ({
     updateMouseUp(beat, instrument);
   };
 
+  const handleMouseEnter = (beat: number) => {
+    mouseEnter(beat, instrument);
+  };
+
+  const handleMouseLeave = (beat: number) => {
+    mouseLeave(beat, instrument);
+  };
+
   return (
     <div style={{ display: 'flex', flex: 1 }}>
       <Pitch value={pitchState} onChange={updatePitch} />
@@ -90,6 +102,8 @@ const Roll = ({
           isPlaying={currentBeat == i}
           updateMouseDown={handleMouseDown}
           updateMouseUp={handleMouseUp}
+          mouseEnter={handleMouseEnter}
+          mouseLeave={handleMouseLeave}
           key={i}
         />
       ))}

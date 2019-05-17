@@ -7,6 +7,8 @@ type BeatProps = {
   isPlaying: boolean;
   updateMouseDown: (beat: number) => void;
   updateMouseUp: (beat: number) => void;
+  mouseEnter: (beat: number) => void;
+  mouseLeave: (beat: number) => void;
 };
 
 const Beat = ({
@@ -15,7 +17,9 @@ const Beat = ({
   id,
   isPlaying,
   updateMouseDown,
-  updateMouseUp
+  updateMouseUp,
+  mouseEnter,
+  mouseLeave
 }: BeatProps) => {
   return (
     <div
@@ -29,12 +33,14 @@ const Beat = ({
         margin: '1px'
       }}
       id={id}
-      onClick={onClick}
+      // onClick={onClick}
       onMouseDown={(event: React.MouseEvent) => {
         event.preventDefault();
         updateMouseDown(parseInt(id));
       }}
       onMouseUp={(event: React.MouseEvent) => updateMouseUp(parseInt(id))}
+      onMouseEnter={(event: React.MouseEvent) => mouseEnter(parseInt(id))}
+      onMouseLeave={(event: React.MouseEvent) => mouseLeave(parseInt(id))}
     />
   );
 };
