@@ -6,8 +6,8 @@ type PitchProps = {
   onChange: (value: number) => void;
 };
 
-const MIN_PITCH = -12;
-const MAX_PITCH = 12;
+const MIN_PITCH = 0.5;
+const MAX_PITCH = 2;
 
 const Pitch = ({ value, onChange }: PitchProps) => (
   <div
