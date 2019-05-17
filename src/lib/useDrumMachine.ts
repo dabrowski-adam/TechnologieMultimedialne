@@ -11,6 +11,8 @@ import tri from 'assets/sounds/track7.wav';
 import rim from 'assets/sounds/track8.wav';
 import clav from 'assets/sounds/track9.wav';
 import cow from 'assets/sounds/track10.wav';
+import min from 'ramda/es/min';
+import max from 'ramda/es/max';
 
 export enum Instrument {
   OpenHat = 'Open Hat',
@@ -93,16 +95,20 @@ export const playSound = (instrument: Instrument) => {
 
 const INTERVAL = '16n';
 
-const makeSequence = (selection: InstrumentBeats): Tone.Sequence => {
+const makeSequence = (
+  selection: InstrumentBeats,
+  setCurrentBeat: (beat: number) => void
+): Tone.Sequence => {
   const sequence = new Tone.Sequence(
     (time, col) => {
+      setCurrentBeat(col);
       Object.entries(selection).forEach(([instrument, beats]) => {
         if (beats[col]) {
           sounds[instrument as Instrument].start(time, 0, '16n');
         }
       });
     },
-    range(0, 15).map(toString),
+    range(0, 16).map(toString),
     INTERVAL
   ).start(0);
 
@@ -148,6 +154,20 @@ const updateSelection = (
   value: boolean
 ) => assoc(instrument, update(n, value, selection[instrument]), selection);
 
+const updateSelectionRange = (
+  selection: InstrumentBeats,
+  instrument: Instrument,
+  n: number[],
+  value: boolean
+): InstrumentBeats => {
+  let selectionCopy = selection;
+  for (let i in n) {
+    selectionCopy = updateSelection(selectionCopy, instrument, n[i], value);
+  }
+
+  return selectionCopy;
+};
+
 const useDrumMachine = (): [
   InstrumentBeats,
   (instrument: Instrument, n: number, value: boolean) => void,
@@ -157,15 +177,20 @@ const useDrumMachine = (): [
   () => void,
   number,
   (tempo: number) => void,
-  (instrument: Instrument, pitch: number) => void
+  (instrument: Instrument, pitch: number) => void,
+  number,
+  (beat: number, instrument: Instrument, value: boolean) => void,
+  (beat: number, instrument: Instrument) => void
 ] => {
   const [selection, setSelection] = useState(defaultSelection);
   const [sequence, setSequence] = useState<Tone.Sequence>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [tempo, setTempo] = useState(Tone.Transport.bpm.value); // Could this be solved better?
+  const [currentBeat, setCurrentBeat] = useState(-1);
+  const [mouseDownValue, setMouseDownValue] = useState(null);
 
   const play = useCallback(() => {
-    setSequence(makeSequence(selection));
+    setSequence(makeSequence(selection, setCurrentBeat));
     startPlaying();
     setIsPlaying(true);
   }, [selection, setSequence, setIsPlaying]);
@@ -177,6 +202,7 @@ const useDrumMachine = (): [
 
     stopPlaying(sequence);
     setIsPlaying(false);
+    setCurrentBeat(-1);
   }, [sequence]);
 
   const selectBeat = useCallback(
@@ -188,13 +214,33 @@ const useDrumMachine = (): [
         // 'Modify' currently playing sequence
         const { progress } = sequence;
         sequence.stop(0);
-        const updatedSequence = makeSequence(updatedSelection);
+        const updatedSequence = makeSequence(updatedSelection, setCurrentBeat);
         updatedSequence.start(progress);
         setSequence(updatedSequence);
       }
     },
     [selection, isPlaying, sequence]
   );
+
+  const selectBeats = (instrument: Instrument, n: number[], value: boolean) => {
+    const updatedSelection = updateSelectionRange(
+      selection,
+      instrument,
+      n,
+      value
+    );
+    setSelection(updatedSelection);
+    console.log(updatedSelection);
+
+    if (isPlaying) {
+      // 'Modify' currently playing sequence
+      const { progress } = sequence;
+      sequence.stop(0);
+      const updatedSequence = makeSequence(updatedSelection, setCurrentBeat);
+      updatedSequence.start(progress);
+      setSequence(updatedSequence);
+    }
+  };
 
   const clearSelection = useCallback(() => {
     setSelection(defaultSelection);
@@ -210,6 +256,30 @@ const useDrumMachine = (): [
     [setTempo]
   );
 
+  const updateMouseDown = (
+    mouseDownBeat: number,
+    instrument: Instrument,
+    value: boolean
+  ) => {
+    setMouseDownValue({ beat: mouseDownBeat, instrument, value });
+  };
+
+  const updateMouseUp = (mouseUpValue: number, instrument: Instrument) => {
+    if (
+      instrument === mouseDownValue.instrument &&
+      mouseUpValue !== mouseDownValue.beat
+    ) {
+      selectBeats(
+        instrument,
+        range(
+          min(mouseUpValue, mouseDownValue.beat),
+          max(mouseUpValue, mouseDownValue.beat) + 1
+        ),
+        mouseDownValue.value
+      );
+    }
+  };
+
   return [
     selection,
     selectBeat,
@@ -219,7 +289,10 @@ const useDrumMachine = (): [
     clearSelection,
     tempo,
     changeTempo,
-    changePitch
+    changePitch,
+    currentBeat,
+    updateMouseDown,
+    updateMouseUp,
   ];
 };
 

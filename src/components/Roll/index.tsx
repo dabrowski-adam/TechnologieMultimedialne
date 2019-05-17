@@ -9,6 +9,13 @@ type RollProps = {
   select: (instrument: Instrument, n: number, value: boolean) => void;
   isPlaying: boolean;
   setPitch: (instrument: Instrument, pitch: number) => void;
+  currentBeat: number;
+  updateMouseDown: (
+    beat: number,
+    instrument: Instrument,
+    value: boolean
+  ) => void;
+  updateMouseUp: (beat: number, instrument: Instrument) => void;
 };
 
 const Roll = ({
@@ -16,7 +23,10 @@ const Roll = ({
   beats,
   select,
   isPlaying,
-  setPitch
+  setPitch,
+  currentBeat,
+  updateMouseDown,
+  updateMouseUp
 }: RollProps) => {
   const previewSound = useCallback(() => {
     playSound(instrument);
@@ -45,6 +55,14 @@ const Roll = ({
     [setPitch, instrument]
   );
 
+  const handleMouseDown = (beat: number) => {
+    updateMouseDown(beat, instrument, !beats[beat]);
+  };
+
+  const handleMouseUp = (beat: number) => {
+    updateMouseUp(beat, instrument);
+  };
+
   return (
     <div style={{ display: 'flex', flex: 1 }}>
       <Pitch value={pitchState} onChange={updatePitch} />
@@ -64,7 +82,16 @@ const Roll = ({
         {instrument}
       </div>
       {beats.map((isActive, i) => (
-        <Beat isActive={isActive} onClick={handleClick} id={`${i}`} key={i} />
+        <Beat
+          isActive={isActive}
+          onClick={handleClick}
+          id={`${i}`}
+          // eslint-disable-next-line eqeqeq
+          isPlaying={currentBeat == i}
+          updateMouseDown={handleMouseDown}
+          updateMouseUp={handleMouseUp}
+          key={i}
+        />
       ))}
     </div>
   );

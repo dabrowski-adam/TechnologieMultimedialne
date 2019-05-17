@@ -15,7 +15,10 @@ const PianoRoll = () => {
     clear,
     tempo,
     setTempo,
-    setPitch
+    setPitch,
+    currentBeat,
+    updateMouseDown,
+    updateMouseUp
   ] = useDrumMachine();
 
   const togglePlaying = useCallback(() => {
@@ -48,6 +51,9 @@ const PianoRoll = () => {
           isPlaying={isPlaying}
           setPitch={setPitch}
           key={instrument}
+          currentBeat={currentBeat}
+          updateMouseDown={updateMouseDown}
+          updateMouseUp={updateMouseUp}
         />
       ))}
     </div>
