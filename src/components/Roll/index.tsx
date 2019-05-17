@@ -26,7 +26,7 @@ const Roll = ({
   setPitch,
   currentBeat,
   updateMouseDown,
-  updateMouseUp,
+  updateMouseUp
 }: RollProps) => {
   const previewSound = useCallback(() => {
     playSound(instrument);
@@ -44,7 +44,7 @@ const Roll = ({
     },
     [previewSound, select, instrument, beats, isPlaying]
   );
-  
+
   // Hacky, TODO: Move this state to useDrumMachine maybe
   const [pitchState, setPitchState] = useState(0);
   const updatePitch = useCallback(
@@ -86,10 +86,11 @@ const Roll = ({
           isActive={isActive}
           onClick={handleClick}
           id={`${i}`}
-          key={i}
+          // eslint-disable-next-line eqeqeq
           isPlaying={currentBeat == i}
           updateMouseDown={handleMouseDown}
           updateMouseUp={handleMouseUp}
+          key={i}
         />
       ))}
     </div>
