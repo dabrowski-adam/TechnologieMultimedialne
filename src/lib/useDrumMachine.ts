@@ -27,17 +27,66 @@ export enum Instrument {
   Shaker = 'Shaker'
 }
 
+const DEFAULT_PITCH = 0;
+
+const soundEffects = {
+  [Instrument.OpenHat]: new Tone.PitchShift(DEFAULT_PITCH),
+  [Instrument.ClosedHat]: new Tone.PitchShift(DEFAULT_PITCH),
+  [Instrument.Clap]: new Tone.PitchShift(DEFAULT_PITCH),
+  [Instrument.Kick]: new Tone.PitchShift(DEFAULT_PITCH),
+  [Instrument.Snare]: new Tone.PitchShift(DEFAULT_PITCH),
+  [Instrument.Triangle]: new Tone.PitchShift(DEFAULT_PITCH),
+  [Instrument.Rimshot]: new Tone.PitchShift(DEFAULT_PITCH),
+  [Instrument.Cowbell]: new Tone.PitchShift(DEFAULT_PITCH),
+  [Instrument.Clave]: new Tone.PitchShift(DEFAULT_PITCH),
+  [Instrument.Shaker]: new Tone.PitchShift(DEFAULT_PITCH)
+};
+
+const changePitch = (instrument: Instrument, pitch: number) => {
+  soundEffects[instrument].pitch = pitch;
+};
+
 export const sounds = {
-  [Instrument.OpenHat]: new Tone.Player(open).toMaster(),
-  [Instrument.ClosedHat]: new Tone.Player(closed).toMaster(),
-  [Instrument.Clap]: new Tone.Player(clap).toMaster(),
-  [Instrument.Kick]: new Tone.Player(kick).toMaster(),
-  [Instrument.Snare]: new Tone.Player(snare).toMaster(),
-  [Instrument.Triangle]: new Tone.Player(tri).toMaster(),
-  [Instrument.Rimshot]: new Tone.Player(rim).toMaster(),
-  [Instrument.Cowbell]: new Tone.Player(cow).toMaster(),
-  [Instrument.Clave]: new Tone.Player(clav).toMaster(),
-  [Instrument.Shaker]: new Tone.Player(shaker).toMaster()
+  [Instrument.OpenHat]: new Tone.Player(open).chain(
+    soundEffects[Instrument.OpenHat],
+    Tone.Master
+  ),
+  [Instrument.ClosedHat]: new Tone.Player(closed).chain(
+    soundEffects[Instrument.ClosedHat],
+    Tone.Master
+  ),
+  [Instrument.Clap]: new Tone.Player(clap).chain(
+    soundEffects[Instrument.Clap],
+    Tone.Master
+  ),
+  [Instrument.Kick]: new Tone.Player(kick).chain(
+    soundEffects[Instrument.Kick],
+    Tone.Master
+  ),
+  [Instrument.Snare]: new Tone.Player(snare).chain(
+    soundEffects[Instrument.Snare],
+    Tone.Master
+  ),
+  [Instrument.Triangle]: new Tone.Player(tri).chain(
+    soundEffects[Instrument.Triangle],
+    Tone.Master
+  ),
+  [Instrument.Rimshot]: new Tone.Player(rim).chain(
+    soundEffects[Instrument.Rimshot],
+    Tone.Master
+  ),
+  [Instrument.Cowbell]: new Tone.Player(cow).chain(
+    soundEffects[Instrument.Cowbell],
+    Tone.Master
+  ),
+  [Instrument.Clave]: new Tone.Player(clav).chain(
+    soundEffects[Instrument.Clave],
+    Tone.Master
+  ),
+  [Instrument.Shaker]: new Tone.Player(shaker).chain(
+    soundEffects[Instrument.Shaker],
+    Tone.Master
+  )
 };
 
 export const playSound = (instrument: Instrument) => {
@@ -128,6 +177,7 @@ const useDrumMachine = (): [
   () => void,
   number,
   (tempo: number) => void,
+  (instrument: Instrument, pitch: number) => void,
   number,
   (beat: number, instrument: Instrument, value: boolean) => void,
   (beat: number, instrument: Instrument) => void
@@ -239,9 +289,10 @@ const useDrumMachine = (): [
     clearSelection,
     tempo,
     changeTempo,
+    changePitch,
     currentBeat,
     updateMouseDown,
-    updateMouseUp
+    updateMouseUp,
   ];
 };
 

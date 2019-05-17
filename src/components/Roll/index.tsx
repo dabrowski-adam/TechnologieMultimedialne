@@ -1,12 +1,14 @@
-import React, { useCallback } from 'react';
+import React, { useCallback, useState } from 'react';
 import { Instrument, playSound } from '../../lib/useDrumMachine';
 import Beat from '../Beat';
+import Pitch from '../Pitch';
 
 type RollProps = {
   instrument: Instrument;
   beats: Array<boolean>;
   select: (instrument: Instrument, n: number, value: boolean) => void;
   isPlaying: boolean;
+  setPitch: (instrument: Instrument, pitch: number) => void;
   currentBeat: number;
   updateMouseDown: (
     beat: number,
@@ -21,9 +23,10 @@ const Roll = ({
   beats,
   select,
   isPlaying,
+  setPitch,
   currentBeat,
   updateMouseDown,
-  updateMouseUp
+  updateMouseUp,
 }: RollProps) => {
   const previewSound = useCallback(() => {
     playSound(instrument);
@@ -41,6 +44,16 @@ const Roll = ({
     },
     [previewSound, select, instrument, beats, isPlaying]
   );
+  
+  // Hacky, TODO: Move this state to useDrumMachine maybe
+  const [pitchState, setPitchState] = useState(0);
+  const updatePitch = useCallback(
+    value => {
+      setPitchState(value);
+      setPitch(instrument, value);
+    },
+    [setPitch, instrument]
+  );
 
   const handleMouseDown = (beat: number) => {
     updateMouseDown(beat, instrument, !beats[beat]);
@@ -52,6 +65,7 @@ const Roll = ({
 
   return (
     <div style={{ display: 'flex', flex: 1 }}>
+      <Pitch value={pitchState} onChange={updatePitch} />
       <div
         style={{
           display: 'flex',
