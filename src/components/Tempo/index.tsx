@@ -20,7 +20,7 @@ const Tempo = ({ value, onChange }: TempoProps) => (
       margin: '1px'
     }}
   >
-    <Knob
+    <Knob 
       value={value}
       onChange={onChange}
       min={MIN_TEMPO}

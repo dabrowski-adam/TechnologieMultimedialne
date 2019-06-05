@@ -40,6 +40,14 @@ const PianoRoll = () => {
     <div style={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
       <div style={{ display: 'flex' }}>
         <Tempo value={tempo} onChange={updateTempo} />
+        <div style={{
+          display: 'flex',
+          alignItems: 'center',
+          justifyContent: 'center',
+          width: '60px',
+          background: 'lightskyblue',
+          margin: '1px'
+        }}>{tempo.toFixed(0) + "BPM"}</div>
         <Play isPlaying={isPlaying} togglePlaying={togglePlaying} />
         <Clear clearSelection={clear} />
       </div>
