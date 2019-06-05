@@ -1,5 +1,5 @@
 import { always, assoc, times, update, range, toString } from 'ramda';
-import { useCallback, useState } from 'react';
+import { useCallback, useState, useEffect } from 'react';
 import Tone from 'tone';
 import kick from 'assets/sounds/track1.wav';
 import snare from 'assets/sounds/track2.wav';
@@ -25,6 +25,12 @@ export enum Instrument {
   Clave = 'Clave',
   Cowbell = 'Cowbell',
   Shaker = 'Shaker'
+}
+
+export enum SelectionDirection {
+  None,
+  Left,
+  Right
 }
 
 const DEFAULT_PITCH = 0;
@@ -137,6 +143,8 @@ const useDrumMachine = (): [
   (instrument: Instrument, pitch: number) => void,
   number,
   (beat: number, instrument: Instrument, value: boolean) => void,
+  (beat: number, instrument: Instrument) => void,
+  (beat: number, instrument: Instrument) => void,
   (beat: number, instrument: Instrument) => void
 ] => {
   const [selection, setSelection] = useState(defaultSelection);
@@ -145,6 +153,8 @@ const useDrumMachine = (): [
   const [tempo, setTempo] = useState(Tone.Transport.bpm.value); // Could this be solved better?
   const [currentBeat, setCurrentBeat] = useState(-1);
   const [mouseDownValue, setMouseDownValue] = useState(null);
+  const [lastSelectedBeat, setLastSelectedBeat] = useState(null);
+  const [currentSelectedBeat, setCurrentSelectedBeat] = useState(null);
 
   const play = useCallback(() => {
     setSequence(makeSequence(selection, setCurrentBeat));
@@ -218,22 +228,89 @@ const useDrumMachine = (): [
     instrument: Instrument,
     value: boolean
   ) => {
-    setMouseDownValue({ beat: mouseDownBeat, instrument, value });
+    setMouseDownValue({
+      beat: mouseDownBeat,
+      instrument,
+      value,
+      direction: SelectionDirection.None
+    });
+    selectBeat(instrument, mouseDownBeat, value);
   };
 
   const updateMouseUp = (mouseUpValue: number, instrument: Instrument) => {
-    if (
-      instrument === mouseDownValue.instrument &&
-      mouseUpValue !== mouseDownValue.beat
-    ) {
-      selectBeats(
-        instrument,
-        range(
-          min(mouseUpValue, mouseDownValue.beat),
-          max(mouseUpValue, mouseDownValue.beat) + 1
-        ),
-        mouseDownValue.value
-      );
+    setMouseDownValue(null);
+    setLastSelectedBeat(null);
+  };
+
+  const onMouseEnter = (beat: number, instrument: Instrument) => {
+    if (mouseDownValue) {
+      if (instrument === mouseDownValue.instrument) {
+        let direction = SelectionDirection.None;
+        if (beat > mouseDownValue.beat) direction = SelectionDirection.Right;
+        else if (beat < mouseDownValue.beat)
+          direction = SelectionDirection.Left;
+
+        setMouseDownValue({ ...mouseDownValue, direction });
+        setCurrentSelectedBeat({
+          beat,
+          instrument,
+          value: mouseDownValue.value
+        });
+      }
+    }
+  };
+
+  const updateLastSelected = useEffect(() => {
+    if (mouseDownValue) {
+      if (lastSelectedBeat) {
+        switch (mouseDownValue.direction) {
+          case SelectionDirection.Right:
+            if (currentSelectedBeat.beat < lastSelectedBeat.beat)
+              selectBeat(
+                currentSelectedBeat.instrument,
+                lastSelectedBeat.beat,
+                !mouseDownValue.value
+              );
+            else
+              selectBeat(
+                currentSelectedBeat.instrument,
+                currentSelectedBeat.beat,
+                mouseDownValue.value
+              );
+            break;
+          case SelectionDirection.Left:
+            if (currentSelectedBeat.beat > lastSelectedBeat.beat)
+              selectBeat(
+                currentSelectedBeat.instrument,
+                lastSelectedBeat.beat,
+                !mouseDownValue.value
+              );
+            else
+              selectBeat(
+                currentSelectedBeat.instrument,
+                currentSelectedBeat.beat,
+                mouseDownValue.value
+              );
+            break;
+          case SelectionDirection.None:
+            selectBeat(
+              currentSelectedBeat.instrument,
+              lastSelectedBeat.beat,
+              !mouseDownValue.value
+            );
+            break;
+        }
+      }
+    }
+  }, [currentSelectedBeat]);
+
+  const onMouseLeave = (beat: number, instrument: Instrument) => {
+    if (mouseDownValue) {
+      console.log('mouse leave');
+      if (instrument === mouseDownValue.instrument) {
+        console.log('mouse leave select');
+        setLastSelectedBeat({ beat, instrument, value: mouseDownValue.value });
+      }
     }
   };
 
@@ -250,6 +327,8 @@ const useDrumMachine = (): [
     currentBeat,
     updateMouseDown,
     updateMouseUp,
+    onMouseEnter,
+    onMouseLeave
   ];
 };
 
