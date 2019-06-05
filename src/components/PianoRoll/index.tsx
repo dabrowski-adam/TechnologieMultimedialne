@@ -48,6 +48,7 @@ const PianoRoll = () => {
           justifyContent: 'center',
           width: '60px',
           background: 'lightskyblue',
+          color: 'white',
           margin: '1px'
         }}>{tempo.toFixed(0) + "BPM"}</div>
         <Play isPlaying={isPlaying} togglePlaying={togglePlaying} />
