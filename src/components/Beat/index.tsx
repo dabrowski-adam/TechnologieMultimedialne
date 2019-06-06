@@ -9,6 +9,7 @@ type BeatProps = {
   updateMouseUp: (beat: number) => void;
   mouseEnter: (beat: number) => void;
   mouseLeave: (beat: number) => void;
+  isRangeSelected: boolean;
 };
 
 const Beat = ({
@@ -19,14 +20,19 @@ const Beat = ({
   updateMouseDown,
   updateMouseUp,
   mouseEnter,
-  mouseLeave
+  mouseLeave,
+  isRangeSelected
 }: BeatProps) => {
   return (
     <div
       style={{
         width: '60px',
-        background: isActive
-          ? 'lightcoral'
+        background: isRangeSelected
+          ? 'blue'
+          : isActive
+          ? isPlaying
+            ? 'brown'
+            : 'lightcoral'
           : isPlaying
           ? 'lightgreen'
           : 'lightgrey',

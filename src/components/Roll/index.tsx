@@ -18,6 +18,7 @@ type RollProps = {
   updateMouseUp: (beat: number, instrument: Instrument) => void;
   mouseEnter: (beat: number, instrument: Instrument) => void;
   mouseLeave: (beat: number, instrument: Instrument) => void;
+  selectionRange: { instrument: Instrument; range: number[] };
 };
 
 const Roll = ({
@@ -30,7 +31,8 @@ const Roll = ({
   updateMouseDown,
   updateMouseUp,
   mouseEnter,
-  mouseLeave
+  mouseLeave,
+  selectionRange
 }: RollProps) => {
   const previewSound = useCallback(() => {
     playSound(instrument);
@@ -96,6 +98,11 @@ const Roll = ({
       {beats.map((isActive, i) => (
         <Beat
           isActive={isActive}
+          isRangeSelected={
+            instrument === selectionRange.instrument
+              ? selectionRange.range.includes(i)
+              : false
+          }
           onClick={handleClick}
           id={`${i}`}
           // eslint-disable-next-line eqeqeq
