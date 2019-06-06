@@ -145,7 +145,8 @@ const useDrumMachine = (): [
   (beat: number, instrument: Instrument, value: boolean) => void,
   (beat: number, instrument: Instrument) => void,
   (beat: number, instrument: Instrument) => void,
-  (beat: number, instrument: Instrument) => void
+  (beat: number, instrument: Instrument) => void,
+  { instrument: Instrument; range: number[] }
 ] => {
   const [selection, setSelection] = useState(defaultSelection);
   const [sequence, setSequence] = useState<Tone.Sequence>(null);
@@ -153,8 +154,10 @@ const useDrumMachine = (): [
   const [tempo, setTempo] = useState(Tone.Transport.bpm.value); // Could this be solved better?
   const [currentBeat, setCurrentBeat] = useState(-1);
   const [mouseDownValue, setMouseDownValue] = useState(null);
-  const [lastSelectedBeat, setLastSelectedBeat] = useState(null);
-  const [currentSelectedBeat, setCurrentSelectedBeat] = useState(null);
+  const [selectionRange, setSelectionRange] = useState({
+    instrument: null,
+    range: []
+  });
 
   const play = useCallback(() => {
     setSequence(makeSequence(selection, setCurrentBeat));
@@ -231,86 +234,47 @@ const useDrumMachine = (): [
     setMouseDownValue({
       beat: mouseDownBeat,
       instrument,
-      value,
-      direction: SelectionDirection.None
+      value
     });
-    selectBeat(instrument, mouseDownBeat, value);
+    setSelectionRange({ instrument, range: [mouseDownBeat] });
   };
 
   const updateMouseUp = (mouseUpValue: number, instrument: Instrument) => {
+    if (mouseDownValue) {
+      selectBeats(
+        mouseDownValue.instrument,
+        range(
+          min(mouseUpValue, mouseDownValue.beat),
+          max(mouseUpValue, mouseDownValue.beat) + 1
+        ),
+        mouseDownValue.value
+      );
+    }
     setMouseDownValue(null);
-    setLastSelectedBeat(null);
+    setSelectionRange({ instrument: null, range: [] });
   };
 
   const onMouseEnter = (beat: number, instrument: Instrument) => {
     if (mouseDownValue) {
-      if (instrument === mouseDownValue.instrument) {
-        let direction = SelectionDirection.None;
-        if (beat > mouseDownValue.beat) direction = SelectionDirection.Right;
-        else if (beat < mouseDownValue.beat)
-          direction = SelectionDirection.Left;
-
-        setMouseDownValue({ ...mouseDownValue, direction });
-        setCurrentSelectedBeat({
-          beat,
-          instrument,
-          value: mouseDownValue.value
-        });
-      }
+      calculateSelectionRange(beat, instrument);
     }
   };
 
-  const updateLastSelected = useEffect(() => {
-    if (mouseDownValue) {
-      if (lastSelectedBeat) {
-        switch (mouseDownValue.direction) {
-          case SelectionDirection.Right:
-            if (currentSelectedBeat.beat < lastSelectedBeat.beat)
-              selectBeat(
-                currentSelectedBeat.instrument,
-                lastSelectedBeat.beat,
-                !mouseDownValue.value
-              );
-            else
-              selectBeat(
-                currentSelectedBeat.instrument,
-                currentSelectedBeat.beat,
-                mouseDownValue.value
-              );
-            break;
-          case SelectionDirection.Left:
-            if (currentSelectedBeat.beat > lastSelectedBeat.beat)
-              selectBeat(
-                currentSelectedBeat.instrument,
-                lastSelectedBeat.beat,
-                !mouseDownValue.value
-              );
-            else
-              selectBeat(
-                currentSelectedBeat.instrument,
-                currentSelectedBeat.beat,
-                mouseDownValue.value
-              );
-            break;
-          case SelectionDirection.None:
-            selectBeat(
-              currentSelectedBeat.instrument,
-              lastSelectedBeat.beat,
-              !mouseDownValue.value
-            );
-            break;
-        }
-      }
-    }
-  }, [currentSelectedBeat]);
-
   const onMouseLeave = (beat: number, instrument: Instrument) => {
     if (mouseDownValue) {
-      console.log('mouse leave');
-      if (instrument === mouseDownValue.instrument) {
-        console.log('mouse leave select');
-        setLastSelectedBeat({ beat, instrument, value: mouseDownValue.value });
-      }
+      calculateSelectionRange(beat, instrument);
+    }
+  };
+
+  const calculateSelectionRange = (beat: number, instrument: Instrument) => {
+    if (mouseDownValue) {
+      setSelectionRange({
+        instrument: selectionRange.instrument,
+        range: range(
+          min(beat, mouseDownValue.beat),
+          max(beat, mouseDownValue.beat) + 1
+        )
+      });
     }
   };
 
@@ -328,7 +292,8 @@ const useDrumMachine = (): [
     updateMouseDown,
     updateMouseUp,
     onMouseEnter,
-    onMouseLeave
+    onMouseLeave,
+    selectionRange
   ];
 };
 

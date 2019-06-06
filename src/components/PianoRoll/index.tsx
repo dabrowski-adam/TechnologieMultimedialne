@@ -20,7 +20,8 @@ const PianoRoll = () => {
     updateMouseDown,
     updateMouseUp,
     mouseEnter,
-    mouseLeave
+    mouseLeave,
+    selectionRange
   ] = useDrumMachine();
 
   const togglePlaying = useCallback(() => {
@@ -42,20 +43,25 @@ const PianoRoll = () => {
     <div style={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
       <div style={{ display: 'flex' }}>
         <Tempo value={tempo} onChange={updateTempo} />
-        <div style={{
-          display: 'flex',
-          alignItems: 'center',
-          justifyContent: 'center',
-          width: '60px',
-          background: 'lightskyblue',
-          color: 'white',
-          margin: '1px'
-        }}>{tempo.toFixed(0) + "BPM"}</div>
+        <div
+          style={{
+            display: 'flex',
+            alignItems: 'center',
+            justifyContent: 'center',
+            width: '60px',
+            background: 'lightskyblue',
+            color: 'white',
+            margin: '1px'
+          }}
+        >
+          {tempo.toFixed(0) + 'BPM'}
+        </div>
         <Play isPlaying={isPlaying} togglePlaying={togglePlaying} />
         <Clear clearSelection={clear} />
       </div>
       {Object.entries(selection).map(([instrument, beats]) => (
         <Roll
+          selectionRange={selectionRange}
           instrument={instrument as Instrument}
           beats={beats}
           select={select}
