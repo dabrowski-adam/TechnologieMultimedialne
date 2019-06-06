@@ -30,7 +30,9 @@ const Beat = ({
         background: isRangeSelected
           ? 'blue'
           : isActive
-          ? 'lightcoral'
+          ? isPlaying
+            ? 'brown'
+            : 'lightcoral'
           : isPlaying
           ? 'lightgreen'
           : 'lightgrey',
