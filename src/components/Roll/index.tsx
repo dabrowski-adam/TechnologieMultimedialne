@@ -51,6 +51,14 @@ const Roll = ({
     [previewSound, select, instrument, beats, isPlaying]
   );
 
+  const handleInstrumentClick = useCallback(() => {
+    if (isPlaying) {
+      select(instrument, null, true);
+    } else {
+      previewSound();
+    }
+  }, [previewSound, select, instrument, isPlaying]);
+
   // Hacky, TODO: Move this state to useDrumMachine maybe
   const [pitchState, setPitchState] = useState(0);
   const updatePitch = useCallback(
@@ -91,7 +99,7 @@ const Roll = ({
           background: 'lightgrey',
           margin: '1px'
         }}
-        onClick={previewSound}
+        onClick={handleInstrumentClick}
       >
         {instrument}
       </div>

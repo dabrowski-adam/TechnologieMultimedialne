@@ -1,5 +1,5 @@
 import { always, assoc, times, update, range, toString } from 'ramda';
-import { useCallback, useState, useEffect } from 'react';
+import { useCallback, useState } from 'react';
 import Tone from 'tone';
 import kick from 'assets/sounds/track1.wav';
 import snare from 'assets/sounds/track2.wav';
@@ -33,7 +33,7 @@ export enum SelectionDirection {
   Right
 }
 
-const DEFAULT_PITCH = 0;
+// const DEFAULT_PITCH = 0;
 
 export const sounds = {
   [Instrument.OpenHat]: new Tone.Player(open).toMaster(),
@@ -64,7 +64,7 @@ const makeSequence = (
 ): Tone.Sequence => {
   const sequence = new Tone.Sequence(
     (time, col) => {
-      setCurrentBeat(col);
+      setCurrentBeat(parseInt(col));
       Object.entries(selection).forEach(([instrument, beats]) => {
         if (beats[col]) {
           sounds[instrument as Instrument].start(time, 0, '16n');
@@ -115,7 +115,12 @@ const updateSelection = (
   instrument: Instrument,
   n: number,
   value: boolean
-) => assoc(instrument, update(n, value, selection[instrument]), selection);
+) =>
+  assoc(
+    instrument,
+    update(parseInt(`${n}`), value, selection[instrument]),
+    selection
+  );
 
 const updateSelectionRange = (
   selection: InstrumentBeats,
@@ -152,7 +157,7 @@ const useDrumMachine = (): [
   const [sequence, setSequence] = useState<Tone.Sequence>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [tempo, setTempo] = useState(Tone.Transport.bpm.value); // Could this be solved better?
-  const [currentBeat, setCurrentBeat] = useState(-1);
+  const [currentBeat, setCurrentBeat] = useState<number>(-1);
   const [mouseDownValue, setMouseDownValue] = useState(null);
   const [selectionRange, setSelectionRange] = useState({
     instrument: null,
@@ -177,7 +182,19 @@ const useDrumMachine = (): [
 
   const selectBeat = useCallback(
     (instrument: Instrument, n: number, value: boolean) => {
-      const updatedSelection = updateSelection(selection, instrument, n, value);
+      // Quantization
+      if (n == null && !isPlaying) {
+        return;
+      }
+      const beat = n == null ? currentBeat : n;
+      playSound(instrument);
+
+      const updatedSelection = updateSelection(
+        selection,
+        instrument,
+        beat,
+        value
+      );
       setSelection(updatedSelection);
 
       if (isPlaying) {
@@ -189,7 +206,7 @@ const useDrumMachine = (): [
         setSequence(updatedSequence);
       }
     },
-    [selection, isPlaying, sequence]
+    [selection, isPlaying, sequence, currentBeat]
   );
 
   const selectBeats = (instrument: Instrument, n: number[], value: boolean) => {
