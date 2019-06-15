@@ -1,5 +1,6 @@
 import React, { useCallback, useState } from 'react';
-import Tour from 'reactour';
+import Tour, { Arrow } from 'reactour';
+import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { Instrument } from '../../lib/useDrumMachine';
 import CustomizablePianoRoll from '../CustomizablePianoRoll';
 
@@ -9,7 +10,7 @@ const steps = [
     content: `Let's make some music!`
   },
   {
-    selector: '.kick',
+    selector: '.kick .preview',
     content: 'Click on the instrument name to check out the sound it makes.'
   },
   {
@@ -22,7 +23,7 @@ const steps = [
   },
   {
     selector: '.kick .beat-8',
-    content: '...'
+    content: '...and another one...'
   },
   {
     selector: '.kick .beat-12',
@@ -31,14 +32,20 @@ const steps = [
   {
     selector: '.play',
     content: 'Now click play to hear the rhythm!'
+  },
+  {
+    selector: '.next',
+    content: 'You can now go to the next tutorial.'
   }
 ];
 
 const Tutorial1Start = () => {
-  const [isTourOpen, setIsTourOpen] = useState(true);
+  const [isTourOpen, setIsTourOpen] = useState<boolean>(true);
   const closeTour = useCallback(() => {
     setIsTourOpen(false);
   }, [setIsTourOpen]);
+
+  const [step, setStep] = useState<number>(0);
 
   const instruments = [
     Instrument.OpenHat,
@@ -48,8 +55,27 @@ const Tutorial1Start = () => {
   ];
   return (
     <>
-      <CustomizablePianoRoll instruments={instruments} />
-      <Tour steps={steps} isOpen={isTourOpen} onRequestClose={closeTour} />
+      <CustomizablePianoRoll
+        instruments={instruments}
+        nextRoute={isTourOpen ? undefined : '/tutorials/tempo'}
+      />
+      <Tour
+        steps={steps}
+        isOpen={isTourOpen}
+        goToStep={step}
+        getCurrentStep={setStep}
+        onRequestClose={closeTour}
+        onAfterOpen={disableBodyScroll}
+        onBeforeClose={enableBodyScroll}
+        lastStepNextButton={<Arrow inverted onClick={() => {}} />}
+        closeWithMask={false}
+        disableKeyboardNavigation={['esc']}
+        showCloseButton={false}
+        showNavigationNumber={false}
+        showNumber={false}
+        maskSpace={0}
+        accentColor="lightskyblue"
+      />
     </>
   );
 };

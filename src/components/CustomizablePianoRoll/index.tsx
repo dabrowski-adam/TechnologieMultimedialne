@@ -5,17 +5,21 @@ import Roll from '../Roll';
 import Play from '../Play';
 import Clear from '../Clear';
 import Tempo from '../Tempo';
+import Button from '../shared/Button';
+import { Link } from 'react-router-dom';
 
 type CustomizablePianoRollProps = {
   enableTempo?: boolean;
   enablePitch?: boolean;
   instruments?: Instrument[];
+  nextRoute?: string;
 };
 
 const CustomizablePianoRoll = ({
   enableTempo = false,
   enablePitch = false,
-  instruments = [Instrument.Kick]
+  instruments = [Instrument.Kick],
+  nextRoute
 }: CustomizablePianoRollProps) => {
   const [
     selection,
@@ -51,11 +55,25 @@ const CustomizablePianoRoll = ({
   );
 
   return (
-    <div style={{ display: 'flex', flex: 1, flexDirection: 'column' }}>
+    <div
+      style={{ display: 'flex', flex: 1, flexDirection: 'column' }}
+      className="drum-machine"
+    >
       <div style={{ display: 'flex' }}>
         {enableTempo && <Tempo value={tempo} onChange={updateTempo} />}
         <Play isPlaying={isPlaying} togglePlaying={togglePlaying} />
         <Clear clearSelection={clear} />
+        {nextRoute && (
+          <Link to={nextRoute} style={{ marginLeft: 'auto' }}>
+            <Button
+              onClick={() => {}}
+              style={{ marginLeft: 'auto', background: 'limegreen' }}
+              className="next"
+            >
+              NEXT
+            </Button>
+          </Link>
+        )}
       </div>
       {Object.entries(selection)
         .filter(([instrument]) =>
@@ -81,6 +99,7 @@ const CustomizablePianoRoll = ({
       <div style={{ display: 'flex', marginLeft: '123px' }}>
         {range(1, 17).map(n => (
           <div
+            key={n}
             style={{
               width: '62px',
               textAlign: 'center',
