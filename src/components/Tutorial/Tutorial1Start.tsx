@@ -47,6 +47,23 @@ const Tutorial1Start = () => {
 
   const [step, setStep] = useState<number>(0);
 
+  const [isNextVisible, setIsNextVisible] = useState<boolean>(false);
+  const changeStep = useCallback(
+    n => {
+      setStep(n);
+
+      if (step === 5) {
+        setIsNextVisible(true);
+      }
+
+      // If we can't move forward we've reached the end
+      if (step === n) {
+        closeTour();
+      }
+    },
+    [setStep, step, closeTour, setIsNextVisible]
+  );
+
   const instruments = [
     Instrument.OpenHat,
     Instrument.ClosedHat,
@@ -57,13 +74,13 @@ const Tutorial1Start = () => {
     <>
       <CustomizablePianoRoll
         instruments={instruments}
-        nextRoute={isTourOpen ? undefined : '/tutorials/tempo'}
+        nextRoute={isNextVisible ? '/tutorial/tempo' : undefined}
       />
       <Tour
         steps={steps}
         isOpen={isTourOpen}
         goToStep={step}
-        getCurrentStep={setStep}
+        getCurrentStep={changeStep}
         onRequestClose={closeTour}
         onAfterOpen={disableBodyScroll}
         onBeforeClose={enableBodyScroll}
