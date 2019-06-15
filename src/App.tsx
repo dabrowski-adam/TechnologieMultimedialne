@@ -1,15 +1,13 @@
 import React, { Component } from 'react';
-import { Container } from 'react-bootstrap';
-import 'bootstrap/dist/css/bootstrap.min.css';
 import './App.css';
 import Root from './Root';
 
 class App extends Component {
   render() {
     return (
-      <Container>
+      <div style={{ margin: '1px auto 0 auto', width: '1115px' }}>
         <Root />
-      </Container>
+      </div>
     );
   }
 }
