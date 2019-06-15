@@ -1,4 +1,5 @@
 import React, { useCallback } from 'react';
+import { range } from 'ramda';
 import useDrumMachine, { Instrument } from '../../lib/useDrumMachine';
 import Roll from '../Roll';
 import Play from '../Play';
@@ -77,6 +78,19 @@ const CustomizablePianoRoll = ({
             mouseLeave={mouseLeave}
           />
         ))}
+      <div style={{ display: 'flex', marginLeft: '123px' }}>
+        {range(1, 17).map(n => (
+          <div
+            style={{
+              width: '62px',
+              textAlign: 'center',
+              color: n % 4 === 1 ? 'grey' : 'lightgrey'
+            }}
+          >
+            {n}
+          </div>
+        ))}
+      </div>
     </div>
   );
 };
