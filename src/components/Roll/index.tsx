@@ -99,7 +99,8 @@ const Roll = ({
           width: '121px',
           height: '60px',
           background: 'lightgrey',
-          margin: '1px'
+          margin: '1px',
+          userSelect: 'none'
         }}
         onClick={handleInstrumentClick}
       >

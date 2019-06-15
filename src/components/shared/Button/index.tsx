@@ -1,6 +1,6 @@
 import React from 'react';
 
-const buttonStyle = {
+const buttonStyle: React.CSSProperties = {
   display: 'flex',
   alignItems: 'center',
   justifyContent: 'center',
@@ -9,7 +9,8 @@ const buttonStyle = {
   padding: '0 30px, 0 30px',
   margin: '1px',
   background: 'lightskyblue',
-  color: 'white'
+  color: 'white',
+  userSelect: 'none'
 };
 
 type ButtonProps = {
