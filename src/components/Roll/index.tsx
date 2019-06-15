@@ -19,6 +19,7 @@ type RollProps = {
   mouseEnter: (beat: number, instrument: Instrument) => void;
   mouseLeave: (beat: number, instrument: Instrument) => void;
   selectionRange: { instrument: Instrument; range: number[] };
+  enablePitch: boolean;
 };
 
 const Roll = ({
@@ -32,7 +33,8 @@ const Roll = ({
   updateMouseUp,
   mouseEnter,
   mouseLeave,
-  selectionRange
+  selectionRange,
+  enablePitch
 }: RollProps) => {
   const previewSound = useCallback(() => {
     playSound(instrument);
@@ -87,7 +89,7 @@ const Roll = ({
 
   return (
     <div style={{ display: 'flex', flex: 1 }}>
-      <Pitch value={pitchState} onChange={updatePitch} />
+      {enablePitch && <Pitch value={pitchState} onChange={updatePitch} />}
       <div
         style={{
           display: 'flex',
