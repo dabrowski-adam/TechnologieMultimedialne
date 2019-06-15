@@ -1,13 +1,48 @@
 import React, { Component } from 'react';
 import { BrowserRouter as Router, Route, Redirect } from 'react-router-dom';
 import PianoRoll from './components/PianoRoll';
+import Tutorial1Start from './components/Tutorial/Tutorial1Start';
+import Tutorial2Tempo from './components/Tutorial/Tutorial2Tempo';
+import Tutorial3Pitch from './components/Tutorial/Tutorial3Pitch';
+import Tutorial4AllInstruments from './components/Tutorial/Tutorial4AllInstruments';
 
 class Root extends Component {
   render() {
     return (
       <Router>
-        <Route exact path="/" render={() => <Redirect to="/piano-roll" />} />
         <Route path="/piano-roll" component={PianoRoll} />
+        <Route
+          exact
+          path="/"
+          render={() => <Redirect to="/tutorial/start" />}
+        />
+        <Route path="/tutorial/start" component={Tutorial1Start} />
+        <Route path="/tutorial/tempo" component={Tutorial2Tempo} />
+        <Route path="/tutorial/pitch" component={Tutorial3Pitch} />
+        <Route
+          path="/tutorial/instruments"
+          component={Tutorial4AllInstruments}
+        />
+        <Route
+          exact
+          path="/tutorial/1"
+          render={() => <Redirect to="/tutorial/start" />}
+        />
+        <Route
+          exact
+          path="/tutorial/2"
+          render={() => <Redirect to="/tutorial/tempo" />}
+        />
+        <Route
+          exact
+          path="/tutorial/3"
+          render={() => <Redirect to="/tutorial/pitch" />}
+        />
+        <Route
+          exact
+          path="/tutorial/4"
+          render={() => <Redirect to="/tutorial/instruments" />}
+        />
       </Router>
     );
   }
