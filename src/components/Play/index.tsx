@@ -7,7 +7,9 @@ type PlayProps = {
 };
 
 const Play = ({ togglePlaying, isPlaying }: PlayProps) => (
-  <Button onClick={togglePlaying}>{isPlaying ? 'STOP' : 'PLAY'}</Button>
+  <Button onClick={togglePlaying} className="play">
+    {isPlaying ? 'STOP' : 'PLAY'}
+  </Button>
 );
 
 export default Play;

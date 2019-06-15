@@ -23,7 +23,6 @@
     "react": "^16.8.4",
     "react-bootstrap": "^1.0.0-beta.6",
     "react-dom": "^16.8.4",
-    "react-joyride": "^2.0.5",
     "react-rotary-knob": "^1.1.5",
     "react-router-dom": "^5.0.0",
     "react-scripts": "3.0.1",

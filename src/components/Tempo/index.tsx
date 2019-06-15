@@ -20,6 +20,7 @@ const Tempo = ({ value, onChange }: TempoProps) => (
         background: 'lightskyblue',
         margin: '1px'
       }}
+      className="tempo"
     >
       <Knob
         value={value}
@@ -28,6 +29,7 @@ const Tempo = ({ value, onChange }: TempoProps) => (
         max={MAX_TEMPO}
         unlockDistance={0}
         preciseMode={false}
+        className="tempo-knob"
       />
     </div>
     <div
@@ -40,6 +42,7 @@ const Tempo = ({ value, onChange }: TempoProps) => (
         color: 'white',
         margin: '1px'
       }}
+      className="tempo-value"
     >
       {`${value.toFixed(0)}BPM`}
     </div>

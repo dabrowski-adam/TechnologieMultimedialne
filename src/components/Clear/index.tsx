@@ -6,7 +6,11 @@ type ClearProps = {
 };
 
 const Clear = ({ clearSelection }: ClearProps) => (
-  <Button style={{ background: 'sandybrown' }} onClick={clearSelection}>
+  <Button
+    style={{ background: 'sandybrown' }}
+    onClick={clearSelection}
+    className="clear"
+  >
     CLEAR
   </Button>
 );

@@ -25,6 +25,7 @@ const Beat = ({
 }: BeatProps) => {
   return (
     <div
+      className={`beat-${id}`}
       style={{
         width: '60px',
         background: isRangeSelected

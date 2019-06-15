@@ -17,10 +17,15 @@ type ButtonProps = {
   onClick: (event: React.MouseEvent<HTMLDivElement, MouseEvent>) => void;
   style?: React.CSSProperties;
   children: React.ReactNode;
+  className?: string;
 };
 
-const Button = ({ children, onClick, style }: ButtonProps) => (
-  <div style={{ ...buttonStyle, ...style }} onClick={onClick}>
+const Button = ({ children, onClick, style, className }: ButtonProps) => (
+  <div
+    style={{ ...buttonStyle, ...style }}
+    onClick={onClick}
+    className={className}
+  >
     {children}
   </div>
 );

@@ -88,7 +88,10 @@ const Roll = ({
   };
 
   return (
-    <div style={{ display: 'flex', flex: 1 }}>
+    <div
+      style={{ display: 'flex', flex: 1 }}
+      className={instrument.replace(' ', '-').toLowerCase()}
+    >
       {enablePitch && <Pitch value={pitchState} onChange={updatePitch} />}
       <div
         style={{
@@ -103,6 +106,7 @@ const Roll = ({
           userSelect: 'none'
         }}
         onClick={handleInstrumentClick}
+        className="preview"
       >
         {instrument}
       </div>
