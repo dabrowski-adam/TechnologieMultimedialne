@@ -10,7 +10,9 @@ const useTour = (onStepChange?: (step: number) => void) => {
 
   const changeStep = useCallback(
     n => {
-      onStepChange(n);
+      if (onStepChange) {
+        onStepChange(n);
+      }
       setStep(n);
 
       // If we can't move forward we've reached the end

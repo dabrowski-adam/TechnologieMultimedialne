@@ -33,10 +33,6 @@ const steps = [
     selector: '.play',
     content: 'Now click play to hear the rhythm!'
   },
-  // {
-  //   selector: '',
-  //   content: 'This concludes the first lesson.'
-  // },
   {
     selector: '.next',
     content: 'You can now go to the next tutorial.'
@@ -47,7 +43,7 @@ const Tutorial1Start = () => {
   const [isNextVisible, setIsNextVisible] = useState<boolean>(false);
   const onStepChange = useCallback(
     step => {
-      if (step === 7) {
+      if (step === steps.length - 1) {
         setIsNextVisible(true);
       }
     },

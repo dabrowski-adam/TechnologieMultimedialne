@@ -20,6 +20,7 @@ const Pitch = ({ value, onChange }: PitchProps) => (
       background: 'lightskyblue',
       margin: '1px'
     }}
+    className="pitch"
   >
     <Knob
       value={value}
