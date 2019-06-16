@@ -37,7 +37,8 @@ const Beat = ({
           : isPlaying
           ? 'lightgreen'
           : 'lightgrey',
-        margin: '1px'
+        margin: '1px',
+        flexShrink: 0
       }}
       id={id}
       // onClick={onClick}

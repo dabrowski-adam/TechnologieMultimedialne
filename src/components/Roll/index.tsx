@@ -103,7 +103,8 @@ const Roll = ({
           height: '60px',
           background: 'lightgrey',
           margin: '1px',
-          userSelect: 'none'
+          userSelect: 'none',
+          marginLeft: 'auto'
         }}
         onClick={handleInstrumentClick}
         className="preview"

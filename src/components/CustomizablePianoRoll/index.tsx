@@ -59,9 +59,9 @@ const CustomizablePianoRoll = ({
       style={{ display: 'flex', flex: 1, flexDirection: 'column' }}
       className="drum-machine"
     >
-      <div style={{ display: 'flex' }}>
-        {enableTempo && <Tempo value={tempo} onChange={updateTempo} />}
+      <div style={{ display: 'flex', paddingLeft: '62px' }}>
         <Play isPlaying={isPlaying} togglePlaying={togglePlaying} />
+        {enableTempo && <Tempo value={tempo} onChange={updateTempo} />}
         <Clear clearSelection={clear} />
         {nextRoute && (
           <Link to={nextRoute} style={{ marginLeft: 'auto' }}>
@@ -96,14 +96,15 @@ const CustomizablePianoRoll = ({
             mouseLeave={mouseLeave}
           />
         ))}
-      <div style={{ display: 'flex', marginLeft: '123px' }}>
+      <div style={{ display: 'flex', marginLeft: 'auto', width: '992px' }}>
         {range(1, 17).map(n => (
           <div
             key={n}
             style={{
               width: '62px',
               textAlign: 'center',
-              color: n % 4 === 1 ? 'grey' : 'lightgrey'
+              color: n % 4 === 1 ? 'grey' : 'lightgrey',
+              flexShrink: 0
             }}
           >
             {n}

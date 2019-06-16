@@ -43,7 +43,7 @@ const Tempo = ({ value, onChange }: TempoProps) => (
       }}
       className="tempo-value"
     >
-      {`${value.toFixed(0)}BPM`}
+      {`${value.toFixed(0)}`}
     </div>
   </>
 );
