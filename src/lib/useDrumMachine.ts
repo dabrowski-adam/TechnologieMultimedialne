@@ -216,6 +216,10 @@ const useDrumMachine = (): [
       n,
       value
     );
+    if (n.length === 1) {
+      playSound(instrument);
+    }
+
     setSelection(updatedSelection);
 
     if (isPlaying) {
