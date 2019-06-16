@@ -1,8 +1,8 @@
 import React, { useCallback, useState } from 'react';
-import Tour, { Arrow } from 'reactour';
-import { disableBodyScroll, enableBodyScroll } from 'body-scroll-lock';
 import { Instrument } from '../../lib/useDrumMachine';
 import CustomizablePianoRoll from '../CustomizablePianoRoll';
+import useTour from '../../lib/useTour';
+import Tutorial from '../shared/Tutorial';
 
 const steps = [
   {
@@ -33,6 +33,10 @@ const steps = [
     selector: '.play',
     content: 'Now click play to hear the rhythm!'
   },
+  // {
+  //   selector: '',
+  //   content: 'This concludes the first lesson.'
+  // },
   {
     selector: '.next',
     content: 'You can now go to the next tutorial.'
@@ -40,24 +44,18 @@ const steps = [
 ];
 
 const Tutorial1Start = () => {
-  const [isTourOpen, setIsTourOpen] = useState<boolean>(true);
-  const closeTour = useCallback(() => {
-    setIsTourOpen(false);
-  }, [setIsTourOpen]);
-
-  const [step, setStep] = useState<number>(0);
-
   const [isNextVisible, setIsNextVisible] = useState<boolean>(false);
-  const changeStep = useCallback(
-    n => {
-      setStep(n);
-
-      // If we can't move forward we've reached the end
-      if (step === n) {
-        closeTour();
+  const onStepChange = useCallback(
+    step => {
+      if (step === 7) {
+        setIsNextVisible(true);
       }
     },
-    [setStep, step, closeTour, setIsNextVisible]
+    [setIsNextVisible]
+  );
+
+  const { isTourOpen, closeTour, step, changeStep, nextStep } = useTour(
+    onStepChange
   );
 
   const [isObserving, setIsObserving] = useState<boolean>(false);
@@ -67,21 +65,15 @@ const Tutorial1Start = () => {
         const { className } = e.target;
         if (step === 1 && className === 'preview') {
           changeStep(step + 1);
-        }
-        if (step === 2 && className === 'beat-0') {
+        } else if (step === 2 && className === 'beat-0') {
           changeStep(step + 1);
-        }
-        if (step === 3 && className === 'beat-4') {
+        } else if (step === 3 && className === 'beat-4') {
           changeStep(step + 1);
-        }
-        if (step === 4 && className === 'beat-8') {
+        } else if (step === 4 && className === 'beat-8') {
           changeStep(step + 1);
-        }
-        if (step === 5 && className === 'beat-12') {
+        } else if (step === 5 && className === 'beat-12') {
           changeStep(step + 1);
-        }
-        if (step === 6 && className === 'play') {
-          setIsNextVisible(true);
+        } else if (step === 6 && className === 'play') {
           changeStep(step + 1);
         }
       }
@@ -101,28 +93,14 @@ const Tutorial1Start = () => {
         instruments={instruments}
         nextRoute={isNextVisible ? '/tutorial/tempo' : undefined}
       />
-      <Tour
+      <Tutorial
         steps={steps}
-        isOpen={isTourOpen}
-        goToStep={step}
-        getCurrentStep={changeStep}
-        onRequestClose={closeTour}
-        onAfterOpen={target => {
-          disableBodyScroll(target);
-          setIsObserving(true);
-        }}
-        onBeforeClose={target => {
-          enableBodyScroll(target);
-          setIsObserving(false);
-        }}
-        lastStepNextButton={<Arrow inverted onClick={() => {}} />}
-        closeWithMask={false}
-        disableKeyboardNavigation={['esc']}
-        showCloseButton={false}
-        showNavigationNumber={false}
-        showNumber={false}
-        maskSpace={0}
-        accentColor="lightskyblue"
+        isTourOpen={isTourOpen}
+        closeTour={closeTour}
+        step={step}
+        changeStep={changeStep}
+        nextStep={nextStep}
+        setIsObserving={setIsObserving}
       />
     </div>
   );
