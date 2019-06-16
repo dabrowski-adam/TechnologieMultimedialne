@@ -217,7 +217,6 @@ const useDrumMachine = (): [
       value
     );
     setSelection(updatedSelection);
-    console.log(updatedSelection);
 
     if (isPlaying) {
       // 'Modify' currently playing sequence

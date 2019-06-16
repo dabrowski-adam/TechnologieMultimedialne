@@ -66,7 +66,7 @@ const CustomizablePianoRoll = ({
         {nextRoute && (
           <Link to={nextRoute} style={{ marginLeft: 'auto' }}>
             <Button
-              onClick={() => {}}
+              onClick={pause}
               style={{ marginLeft: 'auto', background: 'limegreen' }}
               className="next"
             >

@@ -52,16 +52,41 @@ const Tutorial1Start = () => {
     n => {
       setStep(n);
 
-      if (step === 5) {
-        setIsNextVisible(true);
-      }
-
       // If we can't move forward we've reached the end
       if (step === n) {
         closeTour();
       }
     },
     [setStep, step, closeTour, setIsNextVisible]
+  );
+
+  const [isObserving, setIsObserving] = useState<boolean>(false);
+  const observeClicks = useCallback(
+    e => {
+      if (isObserving) {
+        const { className } = e.target;
+        if (step === 1 && className === 'preview') {
+          changeStep(step + 1);
+        }
+        if (step === 2 && className === 'beat-0') {
+          changeStep(step + 1);
+        }
+        if (step === 3 && className === 'beat-4') {
+          changeStep(step + 1);
+        }
+        if (step === 4 && className === 'beat-8') {
+          changeStep(step + 1);
+        }
+        if (step === 5 && className === 'beat-12') {
+          changeStep(step + 1);
+        }
+        if (step === 6 && className === 'play') {
+          setIsNextVisible(true);
+          changeStep(step + 1);
+        }
+      }
+    },
+    [isObserving, step, changeStep]
   );
 
   const instruments = [
@@ -71,7 +96,7 @@ const Tutorial1Start = () => {
     Instrument.Kick
   ];
   return (
-    <>
+    <div onClick={observeClicks}>
       <CustomizablePianoRoll
         instruments={instruments}
         nextRoute={isNextVisible ? '/tutorial/tempo' : undefined}
@@ -82,8 +107,14 @@ const Tutorial1Start = () => {
         goToStep={step}
         getCurrentStep={changeStep}
         onRequestClose={closeTour}
-        onAfterOpen={disableBodyScroll}
-        onBeforeClose={enableBodyScroll}
+        onAfterOpen={target => {
+          disableBodyScroll(target);
+          setIsObserving(true);
+        }}
+        onBeforeClose={target => {
+          enableBodyScroll(target);
+          setIsObserving(false);
+        }}
         lastStepNextButton={<Arrow inverted onClick={() => {}} />}
         closeWithMask={false}
         disableKeyboardNavigation={['esc']}
@@ -93,7 +124,7 @@ const Tutorial1Start = () => {
         maskSpace={0}
         accentColor="lightskyblue"
       />
-    </>
+    </div>
   );
 };
 
