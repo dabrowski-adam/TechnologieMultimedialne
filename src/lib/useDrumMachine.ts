@@ -216,7 +216,7 @@ const useDrumMachine = (): [
       n,
       value
     );
-    if (n.length === 1) {
+    if (n.length === 1 && !isPlaying) {
       playSound(instrument);
     }
 
