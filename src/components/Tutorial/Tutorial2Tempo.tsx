@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Instrument } from '../../lib/useDrumMachine';
+import { Instrument, OnChangePassedState } from '../../lib/useDrumMachine';
 import CustomizablePianoRoll from '../CustomizablePianoRoll';
 import useTour from '../../lib/useTour';
 import Tutorial from '../shared/Tutorial';
@@ -155,6 +155,19 @@ const Tutorial2Tempo = () => {
     [isObserving, step, changeStep]
   );
 
+  const onChange = useCallback(
+    (state: OnChangePassedState) => {
+      if (!isObserving) {
+        return;
+      }
+      const { selection } = state;
+      if (step === 3 && selection['Closed Hat'].every(selected => selected)) {
+        nextStep();
+      }
+    },
+    [isObserving, step, nextStep]
+  );
+
   const instruments = [
     Instrument.OpenHat,
     Instrument.ClosedHat,
@@ -167,7 +180,8 @@ const Tutorial2Tempo = () => {
       <CustomizablePianoRoll
         instruments={instruments}
         enableTempo
-        nextRoute={isNextVisible ? '/tutorial/pitch' : undefined}
+        nextRoute={isNextVisible ? '/tutorial/snare' : undefined}
+        onChange={onChange}
       />
       <Tutorial
         steps={steps}
