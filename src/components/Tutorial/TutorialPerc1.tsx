@@ -52,7 +52,7 @@ const steps = [
   },
   {
     selector: '.closed-hat',
-    content: `We're going to draw the usual 16th-note pattern`
+    content: `We're going to draw the usual full-length 16-note pattern`
   },
   {
     selector: '',
