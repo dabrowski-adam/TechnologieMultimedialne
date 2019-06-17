@@ -2,6 +2,7 @@ import { always, assoc, times, update, range, toString } from 'ramda';
 import { useCallback, useState } from 'react';
 import Tone from 'tone';
 import kick from 'assets/sounds/track1.wav';
+import kick2 from 'assets/sounds/track1.wav';
 import snare from 'assets/sounds/track2.wav';
 import clap from 'assets/sounds/track3.wav';
 import closed from 'assets/sounds/track4.wav';
@@ -19,6 +20,7 @@ export enum Instrument {
   ClosedHat = 'Closed Hat',
   Clap = 'Clap',
   Kick = 'Kick',
+  Kick2 = 'Kick 2',
   Snare = 'Snare',
   Triangle = 'Triangle',
   Rimshot = 'Rimshot',
@@ -40,6 +42,7 @@ export const sounds = {
   [Instrument.ClosedHat]: new Tone.Player(closed).toMaster(),
   [Instrument.Clap]: new Tone.Player(clap).toMaster(),
   [Instrument.Kick]: new Tone.Player(kick).toMaster(),
+  [Instrument.Kick2]: new Tone.Player(kick2).toMaster(),
   [Instrument.Snare]: new Tone.Player(snare).toMaster(),
   [Instrument.Triangle]: new Tone.Player(tri).toMaster(),
   [Instrument.Rimshot]: new Tone.Player(rim).toMaster(),
@@ -99,6 +102,7 @@ const emptySelection = times(always(false), BEATS);
 
 const defaultSelection: InstrumentBeats = {
   [Instrument.Kick]: emptySelection,
+  [Instrument.Kick2]: emptySelection,
   [Instrument.Snare]: emptySelection,
   [Instrument.Clap]: emptySelection,
   [Instrument.ClosedHat]: emptySelection,
