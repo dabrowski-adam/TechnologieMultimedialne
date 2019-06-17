@@ -190,8 +190,8 @@ const useDrumMachine = (
             {}
           )
         });
-        _setSelection(_selection);
       }
+      _setSelection(_selection);
     },
     [onChange, _setSelection, tempo]
   );
@@ -251,7 +251,6 @@ const useDrumMachine = (
     if (n.length === 1 && !isPlaying) {
       playSound(instrument);
     }
-
     setSelection(updatedSelection);
 
     if (isPlaying) {
