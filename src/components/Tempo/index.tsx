@@ -10,7 +10,7 @@ const MIN_TEMPO = 20;
 const MAX_TEMPO = 200;
 
 const Tempo = ({ value, onChange }: TempoProps) => (
-  <>
+  <div className="tempo" style={{ display: 'flex', flexDirection: 'row' }}>
     <div
       style={{
         display: 'flex',
@@ -45,7 +45,7 @@ const Tempo = ({ value, onChange }: TempoProps) => (
     >
       {`${value.toFixed(0)}`}
     </div>
-  </>
+  </div>
 );
 
 export default Tempo;
