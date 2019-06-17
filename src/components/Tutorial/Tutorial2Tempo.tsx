@@ -174,7 +174,7 @@ const Tutorial2Tempo = () => {
       <CustomizablePianoRoll
         instruments={instruments}
         enableTempo
-        nextRoute={isNextVisible ? '/tutorial/pitch' : undefined}
+        nextRoute={isNextVisible ? '/tutorial/snare' : undefined}
         onChange={onChange}
       />
       <Tutorial

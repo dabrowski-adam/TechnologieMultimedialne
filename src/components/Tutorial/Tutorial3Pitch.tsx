@@ -105,7 +105,6 @@ const Tutorial3Pitch = () => {
         instruments={instruments}
         enableTempo
         enablePitch
-        nextRoute={'/tutorial/instruments'}
       />
       <Tutorial
         steps={steps}

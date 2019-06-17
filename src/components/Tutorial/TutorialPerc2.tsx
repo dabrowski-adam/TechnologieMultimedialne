@@ -263,7 +263,7 @@ const TutorialPerc2 = () => {
       <CustomizablePianoRoll
         enableTempo
         instruments={instruments}
-        nextRoute={isNextVisible ? '/tutorial/tempo' : undefined}
+        nextRoute={isNextVisible ? '/tutorial/pitch' : undefined}
         onChange={onChange}
       />
       <Tutorial
