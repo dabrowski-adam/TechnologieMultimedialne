@@ -92,7 +92,7 @@ const TutorialPerc2 = () => {
       }
       const { selection, tempo } = state;
       if (
-        (step === 1 && tempo < 100 && tempo > 90) ||
+        (step === 1 && tempo < 98 && tempo > 94) ||
         (step === 5 &&
           equals(selection.Kick, [
             true,
@@ -254,7 +254,6 @@ const TutorialPerc2 = () => {
     Instrument.Snare,
     Instrument.Clap,
     Instrument.Kick,
-    Instrument.Triangle,
     Instrument.Rimshot,
     Instrument.Cowbell,
     Instrument.Shaker,

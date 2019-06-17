@@ -72,7 +72,7 @@ const TutorialSnare = () => {
       }
       const { selection, tempo } = state;
       if (
-        (step === 1 && tempo < 75 && tempo > 65) ||
+        (step === 1 && tempo < 72 && tempo > 68) ||
         (step === 4 &&
           equals(selection.Snare, [
             false,
