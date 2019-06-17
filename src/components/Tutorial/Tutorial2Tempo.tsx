@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Instrument } from '../../lib/useDrumMachine';
+import { Instrument, OnChangePassedState } from '../../lib/useDrumMachine';
 import CustomizablePianoRoll from '../CustomizablePianoRoll';
 import useTour from '../../lib/useTour';
 import Tutorial from '../shared/Tutorial';
@@ -14,22 +14,27 @@ const steps = [
     content: `Let's start with the hats. `
   },
   {
+    // 2
     selector: '.closed-hat',
     content: `And just like in previous one, please put them on steps 1-16`
   },
   {
+    // 3
     selector: '.open-hat .preview',
     content: `Great! And now we're going to add the new instrument - open hat. Click on it to hear how it sounds`
   },
   {
+    // 4
     selector: '.open-hat .beat-2',
-    content: `(I/II) We're going to place them so they lead into 2th and 4th beat`
+    content: `(I/II) We're going to place them so they lead into 2nd and 4th beat`
   },
   {
+    // 5
     selector: '.open-hat .beat-10',
-    content: `(II/II) We're going to place them so they lead into 2th and 4th beat`
+    content: `(II/II) We're going to place them so they lead into 2nd and 4th beat`
   },
   {
+    // 6
     selector: '.play',
     content: `Press play to hear what you've done so far sounds like`
   },
@@ -38,18 +43,22 @@ const steps = [
     content: `OK, now add the snare and the clap - by now you should now what we're doing`
   },
   {
+    // 8
     selector: '.snare .beat-4',
     content: `(I/II) Snare`
   },
   {
+    // 9
     selector: '.snare .beat-12',
     content: `(I/II) Plus`
   },
   {
+    // 10
     selector: '.clap .beat-4',
     content: `(I/II) Clap...`
   },
   {
+    // 11
     selector: '.clap .beat-12',
     content: `(II/II) Equals snareclap!`
   },
@@ -58,39 +67,21 @@ const steps = [
     content: `Cool! Now we're going to add kick drums. They're going to be placed differently this time around`
   },
   {
-    selector: '.kick .beat-0',
-    content: `(I/VI) Kick drum goes here`
-  },
-  {
-    selector: '.kick .beat-3',
-    content: `(II/VI) And here`
-  },
-  {
-    selector: '.kick .beat-6',
-    content: `(III/VI) And here`
-  },
-  {
-    selector: '.kick .beat-9',
-    content: `(IV/VI) And here`
-  },
-  {
-    selector: '.kick .beat-10',
-    content: `(V/VI) And here`
-  },
-  {
-    selector: '.kick .beat-14',
-    content: `(VI/VI) And the last one goes here`
+    // 13
+    selector: '.kick',
+    content: `Place kick drums at beats 1, 4, 7, 10, 11 and 15. `
   },
   {
     selector: '.tempo-value',
     content: `Great! Now you've added all instruments that we're going to use in this beat. Notice this little number here. This is the current tempo of your track, counted in beats per minute. Value of 120BPM means that the beat beats every 0,5s. Four on the floor beat (the one from last tutorial) had 4 beats in a measure. This one also has 4 beats in a measure`
   },
   {
-    selector: '.tempo-knob',
-    content: `Change the tempo so it's around 70BPM`
+    // 15
+    selector: '.tempo',
+    content: `Change the tempo so it's at 70BPM`
   },
   {
-    selector: '.next',
+    selector: '',
     content: `Great! And now the beat is done! You might go to the next tutorial to learn more about constructing drum beats :D`
   }
 ];
@@ -111,48 +102,51 @@ const Tutorial2Tempo = () => {
   );
 
   const [isObserving, setIsObserving] = useState<boolean>(false);
-  const observeClicks = useCallback(
-    e => {
-      if (isObserving) {
-        const { className } = e.target;
-        if (step === 2) {
-          changeStep(step + 1);
-        } else if (step === 3 && className === 'preview') {
-          changeStep(step + 1);
-        } else if (step === 4 && className === 'beat-2') {
-          changeStep(step + 1);
-        } else if (step === 5 && className === 'beat-10') {
-          changeStep(step + 1);
-        } else if (step === 6 && className === 'play') {
-          changeStep(step + 1);
-        } else if (step === 8 && className === 'beat-4') {
-          changeStep(step + 1);
-        } else if (step === 9 && className === 'beat-12') {
-          changeStep(step + 1);
-        } else if (step === 10 && className === 'beat-4') {
-          changeStep(step + 1);
-        } else if (step === 11 && className === 'beat-12') {
-          changeStep(step + 1);
-        } else if (step === 13 && className === 'beat-0') {
-          changeStep(step + 1);
-        } else if (step === 14 && className === 'beat-3') {
-          changeStep(step + 1);
-        } else if (step === 15 && className === 'beat-6') {
-          changeStep(step + 1);
-        } else if (step === 16 && className === 'beat-9') {
-          changeStep(step + 1);
-        } else if (step === 17 && className === 'beat-10') {
-          changeStep(step + 1);
-        } else if (step === 18 && className === 'beat-14') {
-          changeStep(step + 1);
-        } else if (step === 20) {
-          changeStep(step + 1);
-        } else if (step === 21 && className === 'next') {
-          changeStep(step + 1);
-        }
+
+  const onChange = useCallback(
+    (state: OnChangePassedState) => {
+      if (!isObserving) {
+        return;
+      }
+      const { selection, tempo } = state;
+      if (
+        (step === 2 && selection['Closed Hat'].every(selected => selected)) ||
+        (step === 4 && selection['Open Hat'][2]) ||
+        (step === 5 && selection['Open Hat'][10]) ||
+        (step === 8 && selection.Snare[4]) ||
+        (step === 9 && selection.Snare[12]) ||
+        (step === 10 && selection.Clap[4]) ||
+        (step === 11 && selection.Clap[12]) ||
+        (step === 13 &&
+          selection.Kick[0] &&
+          selection.Kick[3] &&
+          selection.Kick[6] &&
+          selection.Kick[9] &&
+          selection.Kick[10] &&
+          selection.Kick[14]) ||
+        (step === 15 && (tempo > 65 && tempo < 75))
+      ) {
+        nextStep();
       }
     },
-    [isObserving, step, changeStep]
+    [isObserving, step, nextStep]
+  );
+
+  const observeClicks = useCallback(
+    e => {
+      if (!isObserving) {
+        return;
+      }
+
+      const { className } = e.target;
+      if (
+        (step === 3 && className === 'preview') ||
+        (step === 6 && className === 'play')
+      ) {
+        nextStep();
+      }
+    },
+    [isObserving, step, nextStep]
   );
 
   const instruments = [
@@ -168,6 +162,7 @@ const Tutorial2Tempo = () => {
         instruments={instruments}
         enableTempo
         nextRoute={isNextVisible ? '/tutorial/pitch' : undefined}
+        onChange={onChange}
       />
       <Tutorial
         steps={steps}
