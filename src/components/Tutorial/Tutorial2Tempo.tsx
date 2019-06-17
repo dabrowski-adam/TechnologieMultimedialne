@@ -1,4 +1,5 @@
 import React, { useCallback, useState } from 'react';
+import { equals } from 'ramda';
 import { Instrument, OnChangePassedState } from '../../lib/useDrumMachine';
 import CustomizablePianoRoll from '../CustomizablePianoRoll';
 import useTour from '../../lib/useTour';
@@ -78,7 +79,7 @@ const steps = [
   {
     // 15
     selector: '.tempo',
-    content: `Change the tempo so it's at 70BPM`
+    content: `Change the tempo so it's around 70BPM`
   },
   {
     selector: '',
@@ -118,12 +119,24 @@ const Tutorial2Tempo = () => {
         (step === 10 && selection.Clap[4]) ||
         (step === 11 && selection.Clap[12]) ||
         (step === 13 &&
-          selection.Kick[0] &&
-          selection.Kick[3] &&
-          selection.Kick[6] &&
-          selection.Kick[9] &&
-          selection.Kick[10] &&
-          selection.Kick[14]) ||
+          equals(selection.Kick, [
+            true,
+            false,
+            false,
+            true,
+            false,
+            false,
+            true,
+            false,
+            false,
+            true,
+            true,
+            false,
+            false,
+            false,
+            true,
+            false
+          ])) ||
         (step === 15 && (tempo > 65 && tempo < 75))
       ) {
         nextStep();
