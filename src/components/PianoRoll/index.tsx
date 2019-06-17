@@ -3,7 +3,7 @@ import { Instrument } from '../../lib/useDrumMachine';
 import CustomizablePianoRoll from '../CustomizablePianoRoll';
 
 const PianoRoll = () => {
-  const allInstruments = Object.keys(Instrument).map(
+  const allInstruments = Object.values(Instrument).map(
     instrument => instrument as Instrument
   );
   return (
