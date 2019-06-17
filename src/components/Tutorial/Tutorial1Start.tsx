@@ -79,7 +79,7 @@ const steps = [
   },
   {
     selector: '',
-    content: `Right now the beat sounds pretty much done now but we're going to add one more thing. We're going to put hi-hats on all the steps from 1 to 16 just to fill-in some space and add some top-end`
+    content: `Right now the beat sounds pretty much done but we're going to add one more thing. We're going to put hi-hats on all the steps from 1 to 16 just to fill-in some space and add some top-end`
   },
   {
     selector: '.closed-hat',
