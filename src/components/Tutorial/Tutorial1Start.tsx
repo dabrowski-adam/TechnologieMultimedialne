@@ -55,11 +55,11 @@ const steps = [
   },
   {
     selector: '.snare .beat-4',
-    content: `(I) They're going to be on the second and fourth beat`
+    content: `(I/II) They're going to be on the second and fourth beat`
   },
   {
     selector: '.snare .beat-12',
-    content: `(II) They're going to be on the second and fourth beat`
+    content: `(II/II) They're going to be on the second and fourth beat`
   },
   {
     selector: '',
@@ -67,11 +67,11 @@ const steps = [
   },
   {
     selector: '.clap .beat-4',
-    content: `(I) Put them right under your snares`
+    content: `(I/II) Put them right under your snares`
   },
   {
     selector: '.clap .beat-12',
-    content: `(II) Put them right under your snares`
+    content: `(II/II) Put them right under your snares`
   },
   {
     selector: '',
