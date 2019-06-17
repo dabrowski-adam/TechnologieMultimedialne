@@ -61,10 +61,10 @@ const CustomizablePianoRoll = ({
 
   return (
     <div
-      style={{ display: 'flex', flex: 1, flexDirection: 'column' }}
+      style={{ width: enablePitch ? '1177px' : '1115px', margin: '0 auto' }}
       className="drum-machine"
     >
-      <div style={{ display: 'flex', paddingLeft: '62px' }}>
+      <div style={{ display: 'flex', paddingLeft: enablePitch ? '62px' : 0 }}>
         <Play isPlaying={isPlaying} togglePlaying={togglePlaying} />
         {enableTempo && <Tempo value={tempo} onChange={updateTempo} />}
         <Clear clearSelection={clear} />

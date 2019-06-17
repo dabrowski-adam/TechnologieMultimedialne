@@ -180,7 +180,7 @@ const useDrumMachine = (
       if (onChange) {
         onChange({
           selection: _selection,
-          tempo, // sounds[instrument].playbackRate = pitch;
+          tempo,
           // @ts-ignore
           pitches: Object.entries(sounds).reduce(
             (acc, [key, value]) => ({
