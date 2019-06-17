@@ -83,13 +83,25 @@ const steps = [
     content: `(IV/IV) ..and a little hi-hat`
   },
   {
-    selector: '.next',
+    selector: '',
     content: `That's it! No, really, that's it! And just like that, "you just did it"! Great beat man, great beat :d`
   }
 ];
 
 const Tutorial3Pitch = () => {
-  const { isTourOpen, closeTour, step, changeStep, nextStep } = useTour();
+  const [isNextVisible, setIsNextVisible] = useState<boolean>(false);
+  const onStepChange = useCallback(
+    step => {
+      if (step === steps.length - 1) {
+        setIsNextVisible(true);
+      }
+    },
+    [setIsNextVisible]
+  );
+
+  const { isTourOpen, closeTour, step, changeStep, nextStep } = useTour(
+    onStepChange
+  );
 
   const [isObserving, setIsObserving] = useState<boolean>(false);
 
@@ -98,8 +110,11 @@ const Tutorial3Pitch = () => {
       if (!isObserving) {
         return;
       }
-      const { selection, tempo } = state;
-      if (step === 1 && tempo < 102 && tempo > 98) {
+      const { tempo, pitches } = state;
+      if (
+        (step === 3 && tempo < 102 && tempo > 98) ||
+        (step === 2 && pitches['Kick 2'] > 1.85)
+      ) {
         nextStep();
       }
     },
@@ -111,10 +126,6 @@ const Tutorial3Pitch = () => {
       if (isObserving) {
         const { className } = e.target;
         if (step === 1 && className === 'preview') {
-          changeStep(step + 1);
-        } else if (step === 2) {
-          changeStep(step + 1);
-        } else if (step === 3) {
           changeStep(step + 1);
         } else if (step === 5 && className === 'beat-0') {
           changeStep(step + 1);
@@ -164,6 +175,8 @@ const Tutorial3Pitch = () => {
         instruments={instruments}
         enableTempo
         enablePitch
+        onChange={onChange}
+        nextRoute={isNextVisible ? '/tutorial/instruments' : undefined}
       />
       <Tutorial
         steps={steps}
