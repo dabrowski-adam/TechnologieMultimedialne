@@ -49,6 +49,7 @@ const Tutorial = ({
     showNumber={false}
     maskSpace={0}
     accentColor="lightskyblue"
+    maskClassName="tour-mask"
   />
 );
 
