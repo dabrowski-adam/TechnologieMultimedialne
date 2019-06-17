@@ -1,3 +1,7 @@
+[data-tour-elem='controls'] {
+  justify-content: space-between;
+}
+
 a {
   text-decoration: none;
 }

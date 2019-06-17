@@ -44,6 +44,7 @@ const Tutorial = ({
     closeWithMask={false}
     disableKeyboardNavigation={['esc']}
     showCloseButton={false}
+    showNavigation={false}
     showNavigationNumber={false}
     showNumber={false}
     maskSpace={0}
