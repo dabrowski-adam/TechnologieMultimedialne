@@ -14,6 +14,7 @@ import { Link } from 'react-router-dom';
 type CustomizablePianoRollProps = {
   enableTempo?: boolean;
   enablePitch?: boolean;
+  enableQuantization?: boolean;
   instruments?: Instrument[];
   nextRoute?: string;
   onChange?: (state: OnChangePassedState) => void;
@@ -22,6 +23,7 @@ type CustomizablePianoRollProps = {
 const CustomizablePianoRoll = ({
   enableTempo = false,
   enablePitch = false,
+  enableQuantization = false,
   instruments = [Instrument.Kick],
   nextRoute,
   onChange
@@ -95,6 +97,7 @@ const CustomizablePianoRoll = ({
         .map(([instrument, beats]) => (
           <Roll
             enablePitch={enablePitch}
+            enableQuantization={enableQuantization}
             selectionRange={selectionRange}
             instrument={instrument as Instrument}
             beats={beats}

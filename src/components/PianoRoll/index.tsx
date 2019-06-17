@@ -10,6 +10,7 @@ const PianoRoll = () => {
     <CustomizablePianoRoll
       enableTempo
       enablePitch
+      enableQuantization
       instruments={allInstruments}
     />
   );

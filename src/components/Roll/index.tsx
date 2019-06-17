@@ -20,6 +20,7 @@ type RollProps = {
   mouseLeave: (beat: number, instrument: Instrument) => void;
   selectionRange: { instrument: Instrument; range: number[] };
   enablePitch: boolean;
+  enableQuantization?: boolean;
 };
 
 const Roll = ({
@@ -34,7 +35,8 @@ const Roll = ({
   mouseEnter,
   mouseLeave,
   selectionRange,
-  enablePitch
+  enablePitch,
+  enableQuantization
 }: RollProps) => {
   const previewSound = useCallback(() => {
     playSound(instrument);
@@ -54,12 +56,12 @@ const Roll = ({
   );
 
   const handleInstrumentClick = useCallback(() => {
-    if (isPlaying) {
+    if (isPlaying && enableQuantization) {
       select(instrument, null, true);
     } else {
       previewSound();
     }
-  }, [previewSound, select, instrument, isPlaying]);
+  }, [previewSound, select, instrument, isPlaying, enableQuantization]);
 
   // Hacky, TODO: Move this state to useDrumMachine maybe
   const [pitchState, setPitchState] = useState(0);
