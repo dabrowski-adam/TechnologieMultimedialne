@@ -7,6 +7,7 @@ import Tutorial3Pitch from './components/Tutorial/Tutorial3Pitch';
 import Tutorial4AllInstruments from './components/Tutorial/Tutorial4AllInstruments';
 import TutorialSnare from 'components/Tutorial/TutorialSnare';
 import TutorialPerc1 from 'components/Tutorial/TutorialPerc1';
+import TutorialPerc2 from 'components/Tutorial/TutorialPerc2';
 
 class Root extends Component {
   render() {
@@ -23,6 +24,7 @@ class Root extends Component {
         <Route path="/tutorial/pitch" component={Tutorial3Pitch} />
         <Route path="/tutorial/snare" component={TutorialSnare} />
         <Route path="/tutorial/perc1" component={TutorialPerc1} />
+        <Route path="/tutorial/perc2" component={TutorialPerc2} />
         <Route
           path="/tutorial/instruments"
           component={Tutorial4AllInstruments}
