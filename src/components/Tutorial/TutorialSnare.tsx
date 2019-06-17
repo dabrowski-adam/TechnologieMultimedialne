@@ -3,6 +3,7 @@ import { Instrument, OnChangePassedState } from '../../lib/useDrumMachine';
 import CustomizablePianoRoll from '../CustomizablePianoRoll';
 import useTour from '../../lib/useTour';
 import Tutorial from '../shared/Tutorial';
+import equals from 'ramda/es/equals';
 
 const steps = [
   {
@@ -71,17 +72,45 @@ const TutorialSnare = () => {
       }
       const { selection, tempo } = state;
       if (
-        (step === 1 && tempo < 70) ||
+        (step === 1 && tempo < 71 && tempo > 69) ||
         (step === 4 &&
-          selection.Snare[4] &&
-          selection.Snare[7] &&
-          selection.Snare[9] &&
-          selection.Snare[12]) ||
+          equals(selection.Snare, [
+            false,
+            false,
+            false,
+            false,
+            true,
+            false,
+            false,
+            true,
+            false,
+            true,
+            false,
+            false,
+            true,
+            false,
+            false,
+            false
+          ])) ||
         (step === 6 &&
-          selection.Kick[3] &&
-          selection.Kick[6] &&
-          selection.Kick[10] &&
-          selection.Kick[13]) ||
+          equals(selection.Kick, [
+            false,
+            false,
+            false,
+            true,
+            false,
+            false,
+            true,
+            false,
+            false,
+            false,
+            true,
+            false,
+            false,
+            true,
+            false,
+            false
+          ])) ||
         (step === 8 && selection['Closed Hat'].every(selected => selected))
       ) {
         nextStep();
@@ -115,7 +144,7 @@ const TutorialSnare = () => {
       <CustomizablePianoRoll
         enableTempo
         instruments={instruments}
-        nextRoute={isNextVisible ? '/tutorial/tempo' : undefined}
+        nextRoute={isNextVisible ? '/tutorial/perc1' : undefined}
         onChange={onChange}
       />
       <Tutorial
