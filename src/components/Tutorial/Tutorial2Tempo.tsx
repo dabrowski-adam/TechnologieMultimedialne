@@ -12,7 +12,7 @@ const steps = [
   },
   {
     selector: '',
-    content: `Let's start with the hats. `
+    content: `Let's start with the hats `
   },
   {
     // 2
@@ -70,7 +70,7 @@ const steps = [
   {
     // 13
     selector: '.kick',
-    content: `Place kick drums at beats 1, 4, 7, 10, 11 and 15. `
+    content: `Place kick drums at beats 1, 4, 7, 10, 11 and 15 `
   },
   {
     selector: '.tempo-value',
@@ -83,7 +83,7 @@ const steps = [
   },
   {
     selector: '',
-    content: `Great! And now the beat is done! You might go to the next tutorial to learn more about constructing drum beats :D`
+    content: `Great! And now the beat is done! You might go to the next tutorial to learn more about constructing drum beats`
   }
 ];
 

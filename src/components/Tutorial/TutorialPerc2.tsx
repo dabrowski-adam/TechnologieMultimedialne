@@ -240,7 +240,9 @@ const TutorialPerc2 = () => {
       }
 
       const { className } = e.target;
-      if (step === 3 && className === 'play') {
+      if (step === 2 && className === 'preview') {
+        nextStep();
+      } else if (step === 3 && className === 'play') {
         nextStep();
       }
     },

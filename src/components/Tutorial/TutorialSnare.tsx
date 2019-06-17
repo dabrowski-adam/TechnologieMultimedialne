@@ -24,7 +24,7 @@ const steps = [
   },
   {
     selector: '.snare',
-    content: `Put them on the 5th, 8th, 10th and 13th step`
+    content: `Put them on the 5th, 8th, 10th, 13th and 16th step`
   },
   {
     selector: '',
@@ -32,7 +32,7 @@ const steps = [
   },
   {
     selector: '.kick',
-    content: `Put them on the 4th, 7th, 11th and 14th step`
+    content: `Put them on the 1st, 4th, 7th, 11th and 14th step`
   },
   {
     selector: '',
@@ -90,11 +90,11 @@ const TutorialSnare = () => {
             true,
             false,
             false,
-            false
+            true
           ])) ||
         (step === 6 &&
           equals(selection.Kick, [
-            false,
+            true,
             false,
             false,
             true,
@@ -133,12 +133,7 @@ const TutorialSnare = () => {
     [isObserving, step, nextStep]
   );
 
-  const instruments = [
-    Instrument.ClosedHat,
-    Instrument.Snare,
-    Instrument.Clap,
-    Instrument.Kick
-  ];
+  const instruments = [Instrument.ClosedHat, Instrument.Snare, Instrument.Kick];
   return (
     <div onClick={observeClicks}>
       <CustomizablePianoRoll

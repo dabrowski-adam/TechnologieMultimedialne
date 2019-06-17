@@ -209,6 +209,12 @@ const TutorialPerc1 = () => {
       const { className } = e.target;
       if (step === 2 && className === 'play') {
         nextStep();
+      } else if (step === 4 && className === 'preview') {
+        nextStep();
+      } else if (step === 6 && className === 'preview') {
+        nextStep();
+      } else if (step === 8 && className === 'preview') {
+        nextStep();
       }
     },
     [isObserving, step, nextStep]
