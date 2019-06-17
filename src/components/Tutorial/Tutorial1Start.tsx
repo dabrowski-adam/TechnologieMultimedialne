@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Instrument } from '../../lib/useDrumMachine';
+import { Instrument, OnChangePassedState } from '../../lib/useDrumMachine';
 import CustomizablePianoRoll from '../CustomizablePianoRoll';
 import useTour from '../../lib/useTour';
 import Tutorial from '../shared/Tutorial';
@@ -107,44 +107,61 @@ const Tutorial1Start = () => {
   );
 
   const [isObserving, setIsObserving] = useState<boolean>(false);
-  const observeClicks = useCallback(
-    e => {
-      if (isObserving) {
-        const { className } = e.target;
-        if (step === 1 && className === 'preview') {
-          changeStep(step + 1);
-        } else if (step === 2 && className === 'preview') {
-          changeStep(step + 1);
-        } else if (step === 3 && className === 'preview') {
-          changeStep(step + 1);
-        } else if (step === 4 && className === 'preview') {
-          changeStep(step + 1);
-        } else if (step === 6 && className === 'beat-0') {
-          changeStep(step + 1);
-        } else if (step === 7 && className === 'beat-4') {
-          changeStep(step + 1);
-        } else if (step === 8 && className === 'beat-8') {
-          changeStep(step + 1);
-        } else if (step === 9 && className === 'beat-12') {
-          changeStep(step + 1);
-        } else if (step === 10 && className === 'play') {
-          changeStep(step + 1);
-        } else if (step === 12 && className === 'beat-4') {
-          changeStep(step + 1);
-        } else if (step === 13 && className === 'beat-12') {
-          changeStep(step + 1);
-        } else if (step === 15 && className === 'beat-4') {
-          changeStep(step + 1);
-        } else if (step === 16 && className === 'beat-12') {
-          changeStep(step + 1);
-        } else if (step === 19) {
-          changeStep(step + 1);
-        } else if (step === 20 && className === 'next') {
-          changeStep(step + 1);
-        }
+
+  const onChange = useCallback(
+    (state: OnChangePassedState) => {
+      if (!isObserving) {
+        return;
+      }
+      const { selection } = state;
+      if (step === 6 && selection.Kick[0]) {
+        nextStep();
+      } else if (step === 7 && selection.Kick[4]) {
+        nextStep();
+      } else if (step === 8 && selection.Kick[8]) {
+        nextStep();
+      } else if (step === 9 && selection.Kick[12]) {
+        nextStep();
+      } else if (step === 12 && selection.Snare[4]) {
+        nextStep();
+      } else if (step === 13 && selection.Snare[12]) {
+        nextStep();
+      } else if (step === 15 && selection.Clap[4]) {
+        nextStep();
+      } else if (step === 16 && selection.Clap[12]) {
+        nextStep();
+      } else if (
+        step === 19 &&
+        selection['Closed Hat'].every(selected => selected)
+      ) {
+        nextStep();
       }
     },
-    [isObserving, step, changeStep]
+    [isObserving, step, nextStep]
+  );
+
+  const observeClicks = useCallback(
+    e => {
+      if (!isObserving) {
+        return;
+      }
+
+      const { className } = e.target;
+      if (step === 1 && className === 'preview') {
+        nextStep();
+      } else if (step === 2 && className === 'preview') {
+        nextStep();
+      } else if (step === 3 && className === 'preview') {
+        nextStep();
+      } else if (step === 4 && className === 'preview') {
+        nextStep();
+      } else if (step === 10 && className === 'play') {
+        nextStep();
+      } else if (step === 20 && className === 'next') {
+        nextStep();
+      }
+    },
+    [isObserving, step, nextStep]
   );
 
   const instruments = [
@@ -158,6 +175,7 @@ const Tutorial1Start = () => {
       <CustomizablePianoRoll
         instruments={instruments}
         nextRoute={isNextVisible ? '/tutorial/tempo' : undefined}
+        onChange={onChange}
       />
       <Tutorial
         steps={steps}

@@ -1,6 +1,9 @@
 import React, { useCallback } from 'react';
 import { range } from 'ramda';
-import useDrumMachine, { Instrument } from '../../lib/useDrumMachine';
+import useDrumMachine, {
+  Instrument,
+  OnChangePassedState
+} from '../../lib/useDrumMachine';
 import Roll from '../Roll';
 import Play from '../Play';
 import Clear from '../Clear';
@@ -13,13 +16,15 @@ type CustomizablePianoRollProps = {
   enablePitch?: boolean;
   instruments?: Instrument[];
   nextRoute?: string;
+  onChange?: (state: OnChangePassedState) => void;
 };
 
 const CustomizablePianoRoll = ({
   enableTempo = false,
   enablePitch = false,
   instruments = [Instrument.Kick],
-  nextRoute
+  nextRoute,
+  onChange
 }: CustomizablePianoRollProps) => {
   const [
     selection,
@@ -37,7 +42,7 @@ const CustomizablePianoRoll = ({
     mouseEnter,
     mouseLeave,
     selectionRange
-  ] = useDrumMachine();
+  ] = useDrumMachine(onChange);
 
   const togglePlaying = useCallback(() => {
     if (isPlaying) {

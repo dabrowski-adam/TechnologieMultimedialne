@@ -136,7 +136,17 @@ const updateSelectionRange = (
   return selectionCopy;
 };
 
-const useDrumMachine = (): [
+type InstrumentPitches = { [x in Instrument]: number };
+
+export type OnChangePassedState = {
+  selection: InstrumentBeats;
+  tempo: number;
+  pitches: InstrumentPitches;
+};
+
+const useDrumMachine = (
+  onChange?: (state: OnChangePassedState) => void
+): [
   InstrumentBeats,
   (instrument: Instrument, n: number, value: boolean) => void,
   boolean,
@@ -153,7 +163,7 @@ const useDrumMachine = (): [
   (beat: number, instrument: Instrument) => void,
   { instrument: Instrument; range: number[] }
 ] => {
-  const [selection, setSelection] = useState(defaultSelection);
+  const [selection, _setSelection] = useState(defaultSelection);
   const [sequence, setSequence] = useState<Tone.Sequence>(null);
   const [isPlaying, setIsPlaying] = useState(false);
   const [tempo, setTempo] = useState(Tone.Transport.bpm.value); // Could this be solved better?
@@ -163,6 +173,28 @@ const useDrumMachine = (): [
     instrument: null,
     range: []
   });
+
+  // onChange hook
+  const setSelection = useCallback(
+    _selection => {
+      if (onChange) {
+        onChange({
+          selection: _selection,
+          tempo, // sounds[instrument].playbackRate = pitch;
+          // @ts-ignore
+          pitches: Object.entries(sounds).reduce(
+            (acc, [key, value]) => ({
+              ...acc,
+              [key as Instrument]: value.playbackRate
+            }),
+            {}
+          )
+        });
+        _setSelection(_selection);
+      }
+    },
+    [onChange, _setSelection, tempo]
+  );
 
   const play = useCallback(() => {
     setSequence(makeSequence(selection, setCurrentBeat));
@@ -206,7 +238,7 @@ const useDrumMachine = (): [
         setSequence(updatedSequence);
       }
     },
-    [selection, isPlaying, sequence, currentBeat]
+    [selection, isPlaying, sequence, currentBeat, setSelection]
   );
 
   const selectBeats = (instrument: Instrument, n: number[], value: boolean) => {
