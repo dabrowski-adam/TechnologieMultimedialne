@@ -8,11 +8,15 @@ import equals from 'ramda/es/equals';
 const steps = [
   {
     selector: '',
-    content: `This the 4th tutorial in this series. We're going to build off the 2nd one but now you're get to use some new instrument - percussion or perc for short.`
+    content: `This is the 5th tutorial in series. In this tutorial you're going to use some more percussion and also explore some other ways we can put kick drums and snare drums in a pattern.`
   },
   {
     selector: '.tempo-knob',
-    content: `But first things first, let's set the tempo to around 77.`
+    content: `OK, we're going to start by altering the tempo to around 96BPM.`
+  },
+  {
+    selector: '.shaker .preview',
+    content: `Before we start, this is a shaker. Listen to how it sounds. You're going to use it later on in the pattern.`
   },
   {
     selector: '.play',
@@ -20,59 +24,51 @@ const steps = [
   },
   {
     selector: '',
-    content: `OK, I said we're going to use some percs, now let's hear them.`
-  },
-  {
-    selector: '.triangle .preview',
-    content: `This is the triangle`
-  },
-  {
-    selector: '.triangle',
-    content: `Let's put it on the 3rd and 11th step`
-  },
-  {
-    selector: '.rimshot .preview',
-    content: `This is the 808 rimshot`
-  },
-  {
-    selector: '.rimshot',
-    content: `This one we're going to put on 4th and 10th step so it works with the triangle`
-  },
-  {
-    selector: '.cowbell .preview',
-    content: `And this is and 808 cowbell (which is obviously very different that a real cowbell..)`
-  },
-  {
-    selector: '.cowbell',
-    content: `This one we're going to put just on 16th step`
-  },
-  {
-    selector: '',
-    content: `OK, as far as percussion goes that's really it. The three is all we need! Right now, onto the hats`
-  },
-  {
-    selector: '.closed-hat',
-    content: `We're going to draw the usual 16th-note pattern`
-  },
-  {
-    selector: '',
-    content: `Sounds awesome! Now we're going to add the clap and the kick`
-  },
-  {
-    selector: '.clap',
-    content: `Put clap on 5th and 13th step`
+    content: `Great! Now, let's start with the kicks`
   },
   {
     selector: '.kick',
-    content: `Now put kick on 1st and 11th step`
+    content: `Put kicks on the 1st, 9th, 12th and 13th step`
   },
   {
     selector: '',
-    content: `Great! And now your drum beat is finished. You can go onto the next one`
+    content: `Now onto the snareclaps`
+  },
+  {
+    selector: '.snare',
+    content: `Put snare on the 5th and 13th steps`
+  },
+  {
+    selector: '.clap',
+    content: `Put clap on the 5th and 13th steps`
+  },
+  {
+    selector: '',
+    content: `So far, so good. Now let's bring in other instruments.`
+  },
+  {
+    selector: '.open-hat',
+    content: `The first goes the open hat. Put it on the 3rd step.`
+  },
+  {
+    selector: '.cowbell',
+    content: `Now put cowbell on 4th step.`
+  },
+  {
+    selector: '.rimshot',
+    content: `Rimshot on the 15th.`
+  },
+  {
+    selector: '.shaker',
+    content: `And shaker on the 16th.`
+  },
+  {
+    selector: '',
+    content: `Great! You've just finished the 5th tutorial in this series! Congratulations :d`
   }
 ];
 
-const TutorialPerc1 = () => {
+const TutorialPerc2 = () => {
   const [isNextVisible, setIsNextVisible] = useState<boolean>(false);
   const onStepChange = useCallback(
     step => {
@@ -96,11 +92,9 @@ const TutorialPerc1 = () => {
       }
       const { selection, tempo } = state;
       if (
-        (step === 1 && tempo < 80 && tempo > 75) ||
+        (step === 1 && tempo < 98 && tempo > 94) ||
         (step === 5 &&
-          equals(selection.Triangle, [
-            false,
-            false,
+          equals(selection.Kick, [
             true,
             false,
             false,
@@ -112,17 +106,14 @@ const TutorialPerc1 = () => {
             true,
             false,
             false,
+            true,
+            true,
             false,
             false,
             false
           ])) ||
         (step === 7 &&
-          equals(selection.Rimshot, [
-            false,
-            false,
-            false,
-            true,
-            false,
+          equals(selection.Snare, [
             false,
             false,
             false,
@@ -131,31 +122,16 @@ const TutorialPerc1 = () => {
             false,
             false,
             false,
+            false,
+            false,
+            false,
+            false,
+            true,
             false,
             false,
             false
           ])) ||
-        (step === 9 &&
-          equals(selection.Cowbell, [
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            true
-          ])) ||
-        (step === 11 && selection['Closed Hat'].every(selected => selected)) ||
-        (step === 13 &&
+        (step === 8 &&
           equals(selection.Clap, [
             false,
             false,
@@ -174,24 +150,81 @@ const TutorialPerc1 = () => {
             false,
             false
           ])) ||
-        (step === 14 &&
-          equals(selection.Kick, [
-            true,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
-            false,
+        (step === 10 &&
+          equals(selection['Open Hat'], [
             false,
             false,
             true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
             false,
             false,
             false,
             false,
             false
+          ])) ||
+        (step === 11 &&
+          equals(selection.Cowbell, [
+            false,
+            false,
+            false,
+            true,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false
+          ])) ||
+        (step === 12 &&
+          equals(selection.Rimshot, [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true,
+            false
+          ])) ||
+        (step === 13 &&
+          equals(selection.Shaker, [
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            false,
+            true
           ]))
       ) {
         nextStep();
@@ -207,7 +240,7 @@ const TutorialPerc1 = () => {
       }
 
       const { className } = e.target;
-      if (step === 2 && className === 'play') {
+      if (step === 3 && className === 'play') {
         nextStep();
       }
     },
@@ -221,14 +254,16 @@ const TutorialPerc1 = () => {
     Instrument.Kick,
     Instrument.Triangle,
     Instrument.Rimshot,
-    Instrument.Cowbell
+    Instrument.Cowbell,
+    Instrument.Shaker,
+    Instrument.OpenHat
   ];
   return (
     <div onClick={observeClicks}>
       <CustomizablePianoRoll
         enableTempo
         instruments={instruments}
-        nextRoute={isNextVisible ? '/tutorial/perc2' : undefined}
+        nextRoute={isNextVisible ? '/tutorial/tempo' : undefined}
         onChange={onChange}
       />
       <Tutorial
@@ -244,4 +279,4 @@ const TutorialPerc1 = () => {
   );
 };
 
-export default TutorialPerc1;
+export default TutorialPerc2;
