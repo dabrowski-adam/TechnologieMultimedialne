@@ -11,7 +11,7 @@ const steps = [
     content: `This the 4th tutorial in this series. We're going to build off the 2nd one but now you're get to use some new instrument - percussion or perc for short.`
   },
   {
-    selector: '.tempo-knob',
+    selector: '.tempo',
     content: `But first things first, let's set the tempo to around 77.`
   },
   {
@@ -96,7 +96,7 @@ const TutorialPerc1 = () => {
       }
       const { selection, tempo } = state;
       if (
-        (step === 1 && tempo < 80 && tempo > 75) ||
+        (step === 1 && tempo < 82 && tempo > 72) ||
         (step === 5 &&
           equals(selection.Triangle, [
             false,

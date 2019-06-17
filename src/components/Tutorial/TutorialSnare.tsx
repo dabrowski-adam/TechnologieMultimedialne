@@ -11,7 +11,7 @@ const steps = [
     content: `OK, I said the last beat was the basic modern beat. But did you know that beats can be kick-driven and snare-driven? The last one was kick-driven but with this one we're going to make a snare-driven beat`
   },
   {
-    selector: '.tempo-knob',
+    selector: '.tempo',
     content: `First off, let's adjust the tempo so it's around 70BPM (just like in last tutorial)`
   },
   {
@@ -72,7 +72,7 @@ const TutorialSnare = () => {
       }
       const { selection, tempo } = state;
       if (
-        (step === 1 && tempo < 71 && tempo > 69) ||
+        (step === 1 && tempo < 75 && tempo > 65) ||
         (step === 4 &&
           equals(selection.Snare, [
             false,

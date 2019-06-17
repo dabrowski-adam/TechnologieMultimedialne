@@ -11,7 +11,7 @@ const steps = [
     content: `This is the 5th tutorial in series. In this tutorial you're going to use some more percussion and also explore some other ways we can put kick drums and snare drums in a pattern.`
   },
   {
-    selector: '.tempo-knob',
+    selector: '.tempo',
     content: `OK, we're going to start by altering the tempo to around 96BPM.`
   },
   {
@@ -92,7 +92,7 @@ const TutorialPerc2 = () => {
       }
       const { selection, tempo } = state;
       if (
-        (step === 1 && tempo < 98 && tempo > 94) ||
+        (step === 1 && tempo < 100 && tempo > 90) ||
         (step === 5 &&
           equals(selection.Kick, [
             true,

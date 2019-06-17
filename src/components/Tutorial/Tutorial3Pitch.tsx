@@ -18,7 +18,7 @@ const steps = [
     content: `Let's change its' pitch to around 11:55 (almost 12 o'clock, but a little to the left - we want this kick's pitch an octave above the original)`
   },
   {
-    selector: '.tempo-knob',
+    selector: '.tempo',
     content: `Great! Now let's set the tempo to 100.`
   },
   {
