@@ -96,7 +96,7 @@ const TutorialPerc1 = () => {
       }
       const { selection, tempo } = state;
       if (
-        (step === 1 && tempo < 82 && tempo > 72) ||
+        (step === 1 && tempo < 79 && tempo > 75) ||
         (step === 5 &&
           equals(selection.Triangle, [
             false,

@@ -1,5 +1,5 @@
 import React, { useCallback, useState } from 'react';
-import { Instrument } from '../../lib/useDrumMachine';
+import { Instrument, OnChangePassedState } from '../../lib/useDrumMachine';
 import CustomizablePianoRoll from '../CustomizablePianoRoll';
 import useTour from '../../lib/useTour';
 import Tutorial from '../shared/Tutorial';
@@ -92,6 +92,20 @@ const Tutorial3Pitch = () => {
   const { isTourOpen, closeTour, step, changeStep, nextStep } = useTour();
 
   const [isObserving, setIsObserving] = useState<boolean>(false);
+
+  const onChange = useCallback(
+    (state: OnChangePassedState) => {
+      if (!isObserving) {
+        return;
+      }
+      const { selection, tempo } = state;
+      if (step === 1 && tempo < 102 && tempo > 98) {
+        nextStep();
+      }
+    },
+    [isObserving, step, nextStep]
+  );
+
   const observeClicks = useCallback(
     e => {
       if (isObserving) {

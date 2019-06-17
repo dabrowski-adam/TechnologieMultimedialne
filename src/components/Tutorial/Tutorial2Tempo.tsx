@@ -137,7 +137,7 @@ const Tutorial2Tempo = () => {
             true,
             false
           ])) ||
-        (step === 15 && (tempo > 65 && tempo < 75))
+        (step === 15 && (tempo > 68 && tempo < 72))
       ) {
         nextStep();
       }
