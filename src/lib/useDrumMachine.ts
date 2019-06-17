@@ -166,7 +166,7 @@ const useDrumMachine = (
   const [selection, _setSelection] = useState(defaultSelection);
   const [sequence, setSequence] = useState<Tone.Sequence>(null);
   const [isPlaying, setIsPlaying] = useState(false);
-  const [tempo, setTempo] = useState(Tone.Transport.bpm.value); // Could this be solved better?
+  const [tempo, _setTempo] = useState(Tone.Transport.bpm.value); // Could this be solved better?
   const [currentBeat, setCurrentBeat] = useState<number>(-1);
   const [mouseDownValue, setMouseDownValue] = useState(null);
   const [selectionRange, setSelectionRange] = useState({
@@ -175,25 +175,50 @@ const useDrumMachine = (
   });
 
   // onChange hook
+  const getState = useCallback(
+    (_selection, _tempo) => ({
+      selection: _selection || selection,
+      tempo: _tempo || tempo,
+      pitches: Object.entries(sounds).reduce(
+        (acc, [key, value]) => ({
+          ...acc,
+          [key as Instrument]: value.playbackRate
+        }),
+        {}
+      )
+    }),
+    [selection, tempo]
+  );
+
   const setSelection = useCallback(
     _selection => {
-      if (onChange) {
-        onChange({
-          selection: _selection,
-          tempo, // sounds[instrument].playbackRate = pitch;
-          // @ts-ignore
-          pitches: Object.entries(sounds).reduce(
-            (acc, [key, value]) => ({
-              ...acc,
-              [key as Instrument]: value.playbackRate
-            }),
-            {}
-          )
-        });
-      }
       _setSelection(_selection);
+      if (onChange) {
+        // @ts-ignore
+        onChange(getState(_selection));
+      }
     },
-    [onChange, _setSelection, tempo]
+    [onChange, _setSelection, getState]
+  );
+  const setTempo = useCallback(
+    _tempo => {
+      _setTempo(_tempo);
+      if (onChange) {
+        // @ts-ignore
+        onChange(getState(_tempo));
+      }
+    },
+    [onChange, getState, _setTempo]
+  );
+  const setPitch = useCallback(
+    (instrument: Instrument, pitch: number) => {
+      changePitch(instrument, pitch);
+      if (onChange) {
+        // @ts-ignore
+        onChange(getState());
+      }
+    },
+    [onChange, getState]
   );
 
   const play = useCallback(() => {
@@ -338,7 +363,7 @@ const useDrumMachine = (
     clearSelection,
     tempo,
     changeTempo,
-    changePitch,
+    setPitch,
     currentBeat,
     updateMouseDown,
     updateMouseUp,
