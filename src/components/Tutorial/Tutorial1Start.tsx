@@ -47,7 +47,7 @@ const steps = [
   },
   {
     selector: '.play',
-    content: `Great! And now you have four kicks for four-on-the-floor type beat! Press play to hear what you've just created`
+    content: `Great! And now you have four kicks for four-on-the-floor beat! Press play to hear what you've just created`
   },
   {
     selector: '',
@@ -79,10 +79,10 @@ const steps = [
   },
   {
     selector: '',
-    content: `The beat sounds pretty much done now but we're going to add one more thing. We're going to put hi-hats on all the steps from 1 to 16 just to fill-in some space and add some top-end`
+    content: `Right now the beat sounds pretty much done now but we're going to add one more thing. We're going to put hi-hats on all the steps from 1 to 16 just to fill-in some space and add some top-end`
   },
   {
-    selector: '.closed-hat .beat-0-15',
+    selector: '.closed-hat',
     content: `Please put them on steps 1-16`
   },
   {
@@ -137,7 +137,7 @@ const Tutorial1Start = () => {
           changeStep(step + 1);
         } else if (step === 16 && className === 'beat-12') {
           changeStep(step + 1);
-        } else if (step === 19 && className === 'beat-0-15') {
+        } else if (step === 19) {
           changeStep(step + 1);
         } else if (step === 20 && className === 'next') {
           changeStep(step + 1);
