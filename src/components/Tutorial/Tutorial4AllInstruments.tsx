@@ -6,7 +6,14 @@ const Tutorial4AllInstruments = () => {
   const allInstruments = Object.values(Instrument).map(
     instrument => instrument as Instrument
   );
-  return <CustomizablePianoRoll instruments={allInstruments} enableTempo />;
+  return (
+    <CustomizablePianoRoll
+      instruments={allInstruments}
+      enableTempo
+      enablePitch
+      enableQuantization
+    />
+  );
 };
 
 export default Tutorial4AllInstruments;

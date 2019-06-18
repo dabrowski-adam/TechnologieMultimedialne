@@ -84,7 +84,7 @@ const steps = [
   },
   {
     selector: '.next',
-    content: `That's it! No, really, that's it! And just like that, "you just did it"! Great beat man, great beat :d Now you can go to the next tutorial but you can also go and play /w other instruments' pitch`
+    content: `That's it! No, really, that's it! And just like that, "you just did it"! Great beat man, great beat :d`
   }
 ];
 
