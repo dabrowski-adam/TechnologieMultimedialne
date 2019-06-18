@@ -8,7 +8,7 @@ import equals from 'ramda/es/equals';
 const steps = [
   {
     selector: '',
-    content: `This is the 5th tutorial in series. In this tutorial you're going to use some more percussion and also explore some other ways we can put kick drums and snare drums in a pattern.`
+    content: `This is the 5th tutorial in series. In this tutorial you're going to use some more percussion and also explore some other ways we can put kicks and snares in a pattern.`
   },
   {
     selector: '.tempo',
@@ -36,15 +36,15 @@ const steps = [
   },
   {
     selector: '.snare',
-    content: `Put snare on the 5th and 13th steps`
+    content: `Put the snare on 5th and 13th steps`
   },
   {
     selector: '.clap',
-    content: `Put clap on the 5th and 13th steps`
+    content: `Put the clap on 5th and 13th steps`
   },
   {
     selector: '',
-    content: `So far, so good. Now let's bring in other instruments.`
+    content: `So far so good. Now let's bring in other instruments.`
   },
   {
     selector: '.open-hat',

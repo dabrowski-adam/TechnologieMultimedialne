@@ -8,7 +8,7 @@ import equals from 'ramda/es/equals';
 const steps = [
   {
     selector: '',
-    content: `This the 4th tutorial in this series. We're going to build off the 2nd one but now you're get to use some new instrument - percussion or perc for short.`
+    content: `This the 4th tutorial in this series. We're going to build off the 2nd one but now you get to use new instruments - percussion or perc for short`
   },
   {
     selector: '.tempo',
@@ -40,7 +40,7 @@ const steps = [
   },
   {
     selector: '.cowbell .preview',
-    content: `And this is and 808 cowbell (which is obviously very different that a real cowbell..)`
+    content: `And this is and 808 cowbell (which is obviously very different from a real cowbell..)`
   },
   {
     selector: '.cowbell',
