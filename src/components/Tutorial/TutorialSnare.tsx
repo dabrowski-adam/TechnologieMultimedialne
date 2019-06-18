@@ -44,7 +44,7 @@ const steps = [
   },
   {
     selector: '',
-    content: `Great! And now you have a snare-driven beat! You can go and tell everyone or you can also go to our next tutorial :d`
+    content: `Great! And now you have a snare-driven beat! You can go and tell everyone or you can also go to our next tutorial :d One other tip I have for you is: try muting some hi-hats now that the beat is finished and listen to what this does to the feel of the beat.`
   }
 ];
 
