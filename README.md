@@ -1,5 +1,7 @@
 This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
 
+You’ll need to have [Node 8.10.0 or later](https://nodejs.org/en/) on your local development machine.
+
 ## Available Scripts
 
 In the project directory, you can run:
