@@ -28,7 +28,7 @@
     "react-dom": "^16.8.4",
     "react-rotary-knob": "^1.1.5",
     "react-router-dom": "^5.0.0",
-    "react-scripts": "3.0.1",
+    "react-scripts": "5.0.1",
     "reactour": "^1.15.0",
     "styled-components": "^4",
     "tone": "^13.4.9",
